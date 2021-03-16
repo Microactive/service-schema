@@ -2,7 +2,9 @@
 
 namespace Micronative\ServiceSchema\Config;
 
+use Micronative\ServiceSchema\Config\Exception\ConfigException;
 use Micronative\ServiceSchema\Json\JsonReader;
+use Symfony\Component\Yaml\Yaml;
 
 class ServiceRegister
 {
@@ -11,10 +13,6 @@ class ServiceRegister
 
     /** @var array $services */
     protected $services = [];
-
-    const INDEX_SERVICE = "service";
-    const INDEX_SCHEMA = "schema";
-    const INDEX_CALLBACKS = "callbacks";
 
     /**
      * ServiceRegister constructor.
@@ -29,6 +27,7 @@ class ServiceRegister
     /**
      * @return \Micronative\ServiceSchema\Config\ServiceRegister
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function loadServices()
     {
@@ -36,15 +35,55 @@ class ServiceRegister
             return $this;
         }
         foreach ($this->configs as $config) {
-            $rows = JsonReader::decode(JsonReader::read($config), true);
-            foreach ($rows as $row) {
-                if (isset($row[self::INDEX_SERVICE]) && isset($row[self::INDEX_SCHEMA])) {
-                    $this->registerService($row[self::INDEX_SERVICE], $row[self::INDEX_SCHEMA], isset($row[self::INDEX_CALLBACKS]) ? $row[self::INDEX_CALLBACKS] : null);
-                }
+            $ext = pathinfo($config, PATHINFO_EXTENSION);
+            switch ($ext) {
+                case 'json':
+                    $this->loadFromJson($config);
+                    break;
+                case 'yml':
+                    $this->loadFromYaml($config);
+                    break;
+                default:
+                    throw new ConfigException(ConfigException::UNSUPPORTED_FILE_FORMAT . $ext);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * @param string|null $file
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    protected function loadFromJson(string $file = null)
+    {
+        $services = JsonReader::decode(JsonReader::read($file), true);
+        foreach ($services as $service) {
+            if (isset($service['service']) && isset($service['schema'])) {
+                $this->registerService(
+                    $service['service'],
+                    $service['schema'],
+                    isset($service['callbacks']) ? $service['callbacks'] : null
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string|null $file
+     */
+    protected function loadFromYaml(string $file = null)
+    {
+        $services = Yaml::parseFile($file);
+        foreach ($services as $service) {
+            if (isset($service['service']) && isset($service['schema'])) {
+                $this->registerService(
+                    $service['service'],
+                    $service['schema'],
+                    isset($service['callbacks']) ? $service['callbacks'] : null
+                );
+            }
+        }
     }
 
     /**
@@ -56,7 +95,7 @@ class ServiceRegister
     public function registerService(string $serviceName = null, string $schema = null, array $callbacks = null)
     {
         if (!isset($this->services[$serviceName])) {
-            $this->services[$serviceName] = [self::INDEX_SCHEMA => $schema, self::INDEX_CALLBACKS => $callbacks];
+            $this->services[$serviceName] = ['schema' => $schema, 'callbacks' => $callbacks];
         }
 
         return $this;

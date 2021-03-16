@@ -5,7 +5,6 @@ namespace Micronative\ServiceSchema\Main;
 use Micronative\ServiceSchema\Config\EventRegister;
 use Micronative\ServiceSchema\Config\ServiceRegister;
 use Micronative\ServiceSchema\Event\AbstractEvent;
-use Micronative\ServiceSchema\Event\MessageFactory;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Main\Exception\ProcessorException;
 use Micronative\ServiceSchema\Service\Exception\ServiceException;
@@ -57,6 +56,7 @@ class Processor implements ProcessorInterface
 
     /**
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     protected function loadConfigs()
     {
@@ -84,19 +84,19 @@ class Processor implements ProcessorInterface
             throw new ProcessorException(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
         }
 
-        foreach ($registeredEvents as $eventName => $services) {
-            if (empty($services)) {
+        foreach ($registeredEvents as $eventName => $serviceNames) {
+            if (empty($serviceNames)) {
                 continue;
             }
 
-            foreach ($services as $serviceName) {
-                $registerService = $this->serviceRegister->retrieveService($serviceName);
-                if (empty($registerService)) {
+            foreach ($serviceNames as $serviceName) {
+                $registeredService = $this->serviceRegister->retrieveService($serviceName);
+                if (empty($registeredService)) {
                     continue;
                 }
 
-                $jsonSchema = $registerService[$serviceName][ServiceRegister::INDEX_SCHEMA];
-                $callbacks = $registerService[$serviceName][ServiceRegister::INDEX_CALLBACKS];
+                $jsonSchema = $registeredService[$serviceName]['schema'];
+                $callbacks = $registeredService[$serviceName]['callbacks'];
                 $service = $this->serviceFactory->createService($serviceName, $jsonSchema, $this->container);
                 if (empty($service)) {
                     continue;
@@ -195,7 +195,7 @@ class Processor implements ProcessorInterface
                     continue;
                 }
 
-                $jsonSchema = $registerService[$serviceName][ServiceRegister::INDEX_SCHEMA];
+                $jsonSchema = $registerService[$serviceName]['schema'];
                 $service = $this->serviceFactory->createService($serviceName, $jsonSchema, $this->container);
                 if (empty($service)) {
                     continue;
@@ -266,25 +266,6 @@ class Processor implements ProcessorInterface
     public function setServiceRegister(ServiceRegister $serviceRegister = null)
     {
         $this->serviceRegister = $serviceRegister;
-
-        return $this;
-    }
-
-    /**
-     * @return \Micronative\ServiceSchema\Event\MessageFactory
-     */
-    public function getMessageFactory()
-    {
-        return $this->messageFactory;
-    }
-
-    /**
-     * @param \Micronative\ServiceSchema\Event\MessageFactory|null $messageFactory
-     * @return \Micronative\ServiceSchema\Main\Processor
-     */
-    public function setMessageFactory(MessageFactory $messageFactory = null)
-    {
-        $this->messageFactory = $messageFactory;
 
         return $this;
     }

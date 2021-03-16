@@ -23,6 +23,7 @@ class ServiceRegisterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadServices
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testLoadServices()
     {
@@ -36,6 +37,7 @@ class ServiceRegisterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceRegister::registerService
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testRegisterService()
     {
@@ -50,6 +52,7 @@ class ServiceRegisterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceRegister::retrieveService
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testRetrieveEvent()
     {

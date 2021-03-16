@@ -2,7 +2,6 @@
 
 namespace Micronative\ServiceSchema\Json;
 
-use Micronative\ServiceSchema\Config\ServiceRegister;
 use Micronative\ServiceSchema\Main\Processor;
 
 class SchemaExporter
@@ -35,7 +34,7 @@ class SchemaExporter
         $files = [];
         $services = $this->processor->getServiceRegister()->getServices();
         foreach ($services as $service) {
-            $files[$service[ServiceRegister::INDEX_SCHEMA]] = $this->processor->getServiceValidator()->getSchemaDir() . $service[ServiceRegister::INDEX_SCHEMA];
+            $files[$service['schema']] = $this->processor->getServiceValidator()->getSchemaDir() . $service['schema'];
         }
 
         $schemas = [];

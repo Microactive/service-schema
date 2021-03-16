@@ -1,0 +1,7 @@
+- event: Users.afterSaveCommit.Create
+  services:
+    - Micronative\ServiceSchema\Tests\Service\Samples\CreateContact
+    - Micronative\ServiceSchema\Tests\Service\Samples\CreateTask
+- event: Users.afterSaveCommit.Update
+  services:
+    - Micronative\ServiceSchema\Tests\Service\Samples\UpdateContact

@@ -23,6 +23,7 @@ class EventRegisterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Config\EventRegister::loadEvents
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testLoadEvents()
     {
@@ -36,6 +37,7 @@ class EventRegisterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Config\EventRegister::registerEvent
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testRegisterEvent()
     {
@@ -50,6 +52,7 @@ class EventRegisterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Config\EventRegister::retrieveEvent
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testRetrieveEvent()
     {
@@ -67,6 +70,7 @@ class EventRegisterTest extends TestCase
      * @covers \Micronative\ServiceSchema\Config\EventRegister::getEvents
      * @covers \Micronative\ServiceSchema\Config\EventRegister::setEvents
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testGetterAndSetters()
     {

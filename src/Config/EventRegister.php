@@ -2,7 +2,9 @@
 
 namespace Micronative\ServiceSchema\Config;
 
+use Micronative\ServiceSchema\Config\Exception\ConfigException;
 use Micronative\ServiceSchema\Json\JsonReader;
+use Symfony\Component\Yaml\Yaml;
 
 class EventRegister
 {
@@ -11,9 +13,6 @@ class EventRegister
 
     /** @var array $events */
     protected $events = [];
-
-    const INDEX_EVENT = "event";
-    const INDEX_SERVICES = "services";
 
     /**
      * EventRegister constructor.
@@ -28,6 +27,7 @@ class EventRegister
     /**
      * @return \Micronative\ServiceSchema\Config\EventRegister
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function loadEvents()
     {
@@ -36,15 +36,47 @@ class EventRegister
         }
 
         foreach ($this->configs as $config) {
-            $rows = JsonReader::decode(JsonReader::read($config), true);
-            foreach ($rows as $row) {
-                $eventName = $row[self::INDEX_EVENT];
-                $services = $row[self::INDEX_SERVICES];
-                $this->registerEvent($eventName, $services);
+            $ext = pathinfo($config, PATHINFO_EXTENSION);
+            switch ($ext) {
+                case 'json':
+                    $this->loadFromJson($config);
+                    break;
+                case 'yml':
+                    $this->loadFromYaml($config);
+                    break;
+                default:
+                    throw new ConfigException(ConfigException::UNSUPPORTED_FILE_FORMAT . $ext);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * @param string|null $file
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    protected function loadFromJson(string $file = null)
+    {
+        $rows = JsonReader::decode(JsonReader::read($file), true);
+        foreach ($rows as $row) {
+            $eventName = $row['event'];
+            $services = $row['services'];
+            $this->registerEvent($eventName, $services);
+        }
+    }
+
+    /**
+     * @param string|null $file
+     */
+    protected function loadFromYaml(string $file = null)
+    {
+        $rows = Yaml::parseFile($file);
+        foreach ($rows as $row) {
+            $eventName = $row['event'];
+            $services = $row['services'];
+            $this->registerEvent($eventName, $services);
+        }
     }
 
     /**
