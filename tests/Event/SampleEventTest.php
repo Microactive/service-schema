@@ -16,24 +16,14 @@ class SampleEventTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Event\Message::setPayload
-     * @covers \Micronative\ServiceSchema\Event\Message::setTime
-     * @covers \Micronative\ServiceSchema\Event\Message::setEvent
-     * @covers \Micronative\ServiceSchema\Event\Message::setId
-     * @covers \Micronative\ServiceSchema\Event\Message::getId
-     * @covers \Micronative\ServiceSchema\Event\Message::setStatus
-     * @covers \Micronative\ServiceSchema\Event\Message::getStatus
-     * @covers \Micronative\ServiceSchema\Event\Message::setDescription
-     * @covers \Micronative\ServiceSchema\Event\Message::getDescription
-     * @covers \Micronative\ServiceSchema\Event\Message::setSource
-     * @covers \Micronative\ServiceSchema\Event\Message::getSource
-     * @covers \Micronative\ServiceSchema\Event\Message::setSagaId
-     * @covers \Micronative\ServiceSchema\Event\Message::getSagaId
-     * @covers \Micronative\ServiceSchema\Event\Message::setAttribute
-     * @covers \Micronative\ServiceSchema\Event\Message::getAttribute
-     * @covers \Micronative\ServiceSchema\Event\Message::setAttributes
-     * @covers \Micronative\ServiceSchema\Event\Message::getAttributes
-     * @covers \Micronative\ServiceSchema\Event\Message::toJson
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::toJson
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::getId
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::getName
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::getPayload
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setId
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setName
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setPayload
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setData
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      */
     public function testToJson()
