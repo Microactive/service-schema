@@ -1,5 +1,5 @@
 {
-  "event": "Users.afterSaveCommit.Create",
+  "name": "Users.afterSaveCommit.Create",
   "time": "20190726032212",
   "status": "New",
   "payload": {

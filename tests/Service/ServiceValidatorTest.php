@@ -38,6 +38,7 @@ class ServiceValidatorTest extends TestCase
         $service = new CreateContact();
         $service->setJsonSchema($this->testDir . "/assets/schemas/CreateContact.json");
         $validator = $this->serviceValidator->validate($jsonObject, $service);
+        var_dump($validator->getErrors());
         $this->assertTrue($validator->isValid());
 
         $validator = $this->serviceValidator->getValidator();
