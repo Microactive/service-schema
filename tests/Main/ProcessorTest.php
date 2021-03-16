@@ -17,6 +17,7 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function setUp()
     {

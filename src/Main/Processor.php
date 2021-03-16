@@ -39,6 +39,7 @@ class Processor implements ProcessorInterface
      * @param string|null $schemaDir
      * @param \Psr\Container\ContainerInterface|null $container
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function __construct(
         array $eventConfigs = null,

@@ -29,7 +29,7 @@ class SampleEvent extends AbstractEvent
     public function setData(array $data = null)
     {
         $this->id = isset($data['id']) ? $data['id'] : null;
-        $this->name = isset($data['event']) ? $data['event'] : null;
+        $this->name = isset($data['name']) ? $data['name'] : null;
         $this->payload = isset($data['payload']) ? $data['payload'] : null;
     }
 }
