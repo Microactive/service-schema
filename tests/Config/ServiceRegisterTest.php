@@ -13,7 +13,7 @@ class ServiceRegisterTest extends TestCase
     /** @var ServiceRegister */
     protected $serviceRegister;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));

@@ -4,6 +4,7 @@ namespace Micronative\ServiceSchema\Tests\Config;
 
 use Micronative\ServiceSchema\Config\EventRegister;
 use Micronative\ServiceSchema\Config\Exception\ConfigException;
+use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
 
 class EventRegisterTest extends TestCase
@@ -17,7 +18,7 @@ class EventRegisterTest extends TestCase
     /**
      * @coversDefaultClass \Micronative\ServiceSchema\Config\EventRegister
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));

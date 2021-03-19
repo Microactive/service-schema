@@ -25,7 +25,7 @@ class SchemaExporterTest extends TestCase
     /**
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
@@ -45,6 +45,6 @@ class SchemaExporterTest extends TestCase
         $this->schemaExporter = new SchemaExporter($this->processor);
 
         $result = $this->schemaExporter->export(schemaExporter::RETURN_JSON);
-        $this->assertContains('{"CreateContact":{"type":"object","properties":{"name":{"type":"string","minLength":0,"maxLength":256}', $result);
+        $this->assertStringContainsString('{"CreateContact":{"type":"object","properties":{"name":{"type":"string","minLength":0,"maxLength":256}', $result);
     }
 }

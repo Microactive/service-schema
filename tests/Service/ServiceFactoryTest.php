@@ -14,7 +14,7 @@ class ServiceFactoryTest extends TestCase
     /** @var ServiceFactory */
     protected $serviceFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));

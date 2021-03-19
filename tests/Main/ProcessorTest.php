@@ -19,7 +19,7 @@ class ProcessorTest extends TestCase
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
