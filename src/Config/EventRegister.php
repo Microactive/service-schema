@@ -53,33 +53,6 @@ class EventRegister
     }
 
     /**
-     * @param string|null $file
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     */
-    protected function loadFromJson(string $file = null)
-    {
-        $rows = JsonReader::decode(JsonReader::read($file), true);
-        foreach ($rows as $row) {
-            $eventName = $row['event'];
-            $services = $row['services'];
-            $this->registerEvent($eventName, $services);
-        }
-    }
-
-    /**
-     * @param string|null $file
-     */
-    protected function loadFromYaml(string $file = null)
-    {
-        $rows = Yaml::parseFile($file);
-        foreach ($rows as $row) {
-            $eventName = $row['event'];
-            $services = $row['services'];
-            $this->registerEvent($eventName, $services);
-        }
-    }
-
-    /**
      * @param string|null $eventName
      * @param array|null $services
      * @return \Micronative\ServiceSchema\Config\EventRegister
@@ -144,5 +117,35 @@ class EventRegister
         $this->events = $events;
 
         return $this;
+    }
+
+    /**
+     * @param string|null $file
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    protected function loadFromJson(string $file = null)
+    {
+        $events = JsonReader::decode(JsonReader::read($file), true);
+        $this->loadFromArray($events);
+    }
+
+    /**
+     * @param string|null $file
+     */
+    protected function loadFromYaml(string $file = null)
+    {
+        $events = Yaml::parseFile($file);
+        $this->loadFromArray($events);
+    }
+
+    /**
+     * @param array|null $events
+     */
+    protected function loadFromArray(array $events = null){
+        foreach ($events as $event) {
+            $eventName = $event['event'];
+            $services = $event['services'];
+            $this->registerEvent($eventName, $services);
+        }
     }
 }

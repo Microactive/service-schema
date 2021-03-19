@@ -52,41 +52,6 @@ class ServiceRegister
     }
 
     /**
-     * @param string|null $file
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     */
-    protected function loadFromJson(string $file = null)
-    {
-        $services = JsonReader::decode(JsonReader::read($file), true);
-        foreach ($services as $service) {
-            if (isset($service['service']) && isset($service['schema'])) {
-                $this->registerService(
-                    $service['service'],
-                    $service['schema'],
-                    isset($service['callbacks']) ? $service['callbacks'] : null
-                );
-            }
-        }
-    }
-
-    /**
-     * @param string|null $file
-     */
-    protected function loadFromYaml(string $file = null)
-    {
-        $services = Yaml::parseFile($file);
-        foreach ($services as $service) {
-            if (isset($service['service']) && isset($service['schema'])) {
-                $this->registerService(
-                    $service['service'],
-                    $service['schema'],
-                    isset($service['callbacks']) ? $service['callbacks'] : null
-                );
-            }
-        }
-    }
-
-    /**
      * @param string|null $serviceName
      * @param string|null $schema
      * @param array|null $callbacks
@@ -150,5 +115,39 @@ class ServiceRegister
         $this->services = $services;
 
         return $this;
+    }
+
+    /**
+     * @param string|null $file
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    protected function loadFromJson(string $file = null)
+    {
+        $services = JsonReader::decode(JsonReader::read($file), true);
+        $this->loadFromArray($services);
+    }
+
+    /**
+     * @param string|null $file
+     */
+    protected function loadFromYaml(string $file = null)
+    {
+        $services = Yaml::parseFile($file);
+        $this->loadFromArray($services);
+    }
+
+    /**
+     * @param array|null $services
+     */
+    protected function loadFromArray(array $services = null){
+        foreach ($services as $service) {
+            if (isset($service['service']) && isset($service['schema'])) {
+                $this->registerService(
+                    $service['service'],
+                    $service['schema'],
+                    isset($service['callbacks']) ? $service['callbacks'] : null
+                );
+            }
+        }
     }
 }

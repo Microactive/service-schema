@@ -23,7 +23,11 @@ class ProcessorTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
-        $this->processor = new Processor([$this->testDir . "/assets/configs/events.json"], [$this->testDir . "/assets/configs/services.json"], $this->testDir);
+        $this->processor = new Processor(
+            [$this->testDir . "/assets/configs/events.json",$this->testDir . "/assets/configs/events.yml"],
+            [$this->testDir . "/assets/configs/services.json"],
+            $this->testDir
+        );
     }
 
     /**
