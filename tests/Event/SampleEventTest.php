@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 class SampleEventTest extends TestCase
 {
+    /** @coversDefaultClass \Micronative\ServiceSchema\Event\AbstractEvent */
+
     /** @var string */
     protected $testDir;
 
@@ -31,6 +33,7 @@ class SampleEventTest extends TestCase
         $event = new SampleEvent();
         $event->setName("Test.Event.Name");
         $event->setPayload((object) ["name" => "Ken"]);
+        $this->assertEquals((object) ["name" => "Ken"], $event->getPayload());
 
         $json = $event->toJson();
         $this->assertTrue(is_string($json));

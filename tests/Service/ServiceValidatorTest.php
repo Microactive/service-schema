@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Service\ServiceValidator;
 use Micronative\ServiceSchema\Tests\Service\Samples\CreateContact;
+use Micronative\ServiceSchema\Service\Exception\ServiceException;
 
 class ServiceValidatorTest extends TestCase
 {
@@ -24,6 +25,33 @@ class ServiceValidatorTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::validate
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     */
+    public function testValidateWithEmptyJson()
+    {
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage(ServiceException::MISSING_JSON_STRING);
+        $this->serviceValidator->validate();
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Service\ServiceValidator::validate
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     */
+    public function testValidateWithEmptyJsonSchema()
+    {
+        $file = $this->testDir . "/assets/events/Users.afterSaveCommit.Create.json";
+        $jsonObject = JsonReader::decode(JsonReader::read($file));
+        $service = new CreateContact();
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage(ServiceException::MISSING_SERVICE_SCHEMA);
+        $this->serviceValidator->validate($jsonObject, $service);
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Service\ServiceValidator::validate
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::getValidator
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::setValidator
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::getSchemaDir
@@ -38,7 +66,6 @@ class ServiceValidatorTest extends TestCase
         $service = new CreateContact();
         $service->setJsonSchema($this->testDir . "/assets/schemas/CreateContact.json");
         $validator = $this->serviceValidator->validate($jsonObject, $service);
-        var_dump($validator->getErrors());
         $this->assertTrue($validator->isValid());
 
         $validator = $this->serviceValidator->getValidator();

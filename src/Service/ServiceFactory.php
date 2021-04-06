@@ -10,7 +10,7 @@ class ServiceFactory
     /**
      * @param string|null $serviceClass
      * @param string|null $schema
-     * @param \Psr\Container\ContainerInterface $container
+     * @param \Psr\Container\ContainerInterface|null $container
      * @return \Micronative\ServiceSchema\Service\ServiceInterface|false
      * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
      */
@@ -18,7 +18,7 @@ class ServiceFactory
     {
         try {
             $service = new $serviceClass($container);
-        } catch (\Exception $exception) {
+        } catch (\Error $exception) {
             throw new ServiceException(ServiceException::INVALID_SERVICE_CLASS . $serviceClass);
         }
 

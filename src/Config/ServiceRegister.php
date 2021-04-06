@@ -107,7 +107,7 @@ class ServiceRegister
     }
 
     /**
-     * @param array $services
+     * @param array|null $services
      * @return \Micronative\ServiceSchema\Config\ServiceRegister
      */
     public function setServices(array $services = null)

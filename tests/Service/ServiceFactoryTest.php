@@ -2,6 +2,7 @@
 
 namespace Micronative\ServiceSchema\Tests\Service;
 
+use Micronative\ServiceSchema\Service\Exception\ServiceException;
 use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceInterface;
@@ -19,7 +20,30 @@ class ServiceFactoryTest extends TestCase
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
         $this->serviceFactory = new ServiceFactory();
+    }
 
+    /**
+     * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
+     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     */
+    public function testCreateInvalidServiceClass()
+    {
+        $serviceClass = "\Micronative\ServiceSchema\Tests\Service\Samples\InvalidServiceClass";
+        $schema = $this->testDir . "/assets/schemas/CreateContact.json";
+        $this->expectException(ServiceException::class);
+        $this->serviceFactory->createService($serviceClass, $schema);
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
+     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     */
+    public function testCreateInvalidService()
+    {
+        $serviceClass = "\Micronative\ServiceSchema\Tests\Service\Samples\InvalidService";
+        $schema = $this->testDir . "/assets/schemas/CreateContact.json";
+        $service = $this->serviceFactory->createService($serviceClass, $schema);
+        $this->assertFalse($service);
     }
 
     /**

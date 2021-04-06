@@ -8,6 +8,8 @@ use Micronative\ServiceSchema\Json\JsonReader;
 
 class JsonReaderTest extends TestCase
 {
+    /** @coversDefaultClass \Micronative\ServiceSchema\Json\JsonReader */
+
     /** @var string */
     protected $testDir;
 
@@ -21,11 +23,18 @@ class JsonReaderTest extends TestCase
      * @covers \Micronative\ServiceSchema\Json\JsonReader::read
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      */
-    public function testReadFailed()
+    public function testReadEmptyFile()
     {
         $this->expectException(JsonException::class);
         JsonReader::read(null);
+    }
 
+    /**
+     * @covers \Micronative\ServiceSchema\Json\JsonReader::read
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    public function testReadInvalidFile()
+    {
         $this->expectException(JsonException::class);
         JsonReader::read("someinvalidfile");
     }
@@ -91,6 +100,29 @@ class JsonReaderTest extends TestCase
         $array = ["name" => "Ken"];
         $json = JsonReader::encode($array);
         $this->assertTrue(is_string($json));
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Json\JsonReader::save
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    public function testSaveEmptyFile()
+    {
+        $this->expectException(JsonException::class);
+        $this->expectExceptionMessage(JsonException::MISSING_JSON_FILE);
+        JsonReader::save(null);
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Json\JsonReader::save
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    public function testSaveEmptyContent()
+    {
+        $file = $this->testDir . "/assets/files/save.json";
+        $this->expectException(JsonException::class);
+        $this->expectExceptionMessage(JsonException::MISSING_JSON_CONTENT);
+        JsonReader::save($file, null);
     }
 
     /**

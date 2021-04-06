@@ -2,26 +2,57 @@
 
 namespace Micronative\ServiceSchema\Tests\Config;
 
-use PHPUnit\Framework\TestCase;
+use Micronative\ServiceSchema\Config\Exception\ConfigException;
 use Micronative\ServiceSchema\Config\ServiceRegister;
+use PHPUnit\Framework\TestCase;
 
 class ServiceRegisterTest extends TestCase
 {
+    /** @coversDefaultClass \Micronative\ServiceSchema\Config\ServiceRegister */
+    protected $serviceRegister;
+
     /** @var string */
     protected $testDir;
-
-    /** @var ServiceRegister */
-    protected $serviceRegister;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
-        $this->serviceRegister = new ServiceRegister([$this->testDir . "/assets/configs//services.json"]);
+        $this->serviceRegister = new ServiceRegister(
+            [$this->testDir . "/assets/configs/services.json", $this->testDir . "/assets/configs/services.yml"]
+        );
     }
 
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadServices
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     */
+    public function testLoadServicesWithEmptyConfigs()
+    {
+        $this->serviceRegister->setConfigs(null);
+        $this->serviceRegister->loadServices();
+        $this->assertEquals([], $this->serviceRegister->getServices());
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadServices
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     */
+    public function testLoadServicesWithUnsupportedFile()
+    {
+        $this->serviceRegister->setConfigs([$this->testDir . "/assets/configs/services.csv"]);
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage(ConfigException::UNSUPPORTED_FILE_FORMAT . 'csv');
+        $this->serviceRegister->loadServices();
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadServices
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadFromJson
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadFromYaml
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::loadFromArray
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
@@ -59,8 +90,27 @@ class ServiceRegisterTest extends TestCase
         $this->serviceRegister->loadServices();
         $this->serviceRegister->registerService("Service.Name", "SomeServiceSchema");
         $service = $this->serviceRegister->retrieveService("Service.Name");
+        $noneExistingService = $this->serviceRegister->retrieveService("None.Existing.Name");
         $this->assertTrue(is_array($service));
         $this->assertTrue(isset($service["Service.Name"]));
         $this->assertEquals("SomeServiceSchema", $service["Service.Name"]['schema']);
+        $this->assertNull($noneExistingService);
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::setConfigs
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::setServices
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::getConfigs
+     * @covers \Micronative\ServiceSchema\Config\ServiceRegister::getServices
+     */
+    public function testSettersAndGetters()
+    {
+        $configs = [];
+        $this->serviceRegister->setConfigs($configs);
+        $this->assertEquals($configs, $this->serviceRegister->getConfigs());
+
+        $services = [];
+        $this->serviceRegister->setServices($services);
+        $this->assertEquals($services, $this->serviceRegister->getServices());
     }
 }

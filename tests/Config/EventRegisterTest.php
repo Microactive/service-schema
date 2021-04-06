@@ -4,20 +4,16 @@ namespace Micronative\ServiceSchema\Tests\Config;
 
 use Micronative\ServiceSchema\Config\EventRegister;
 use Micronative\ServiceSchema\Config\Exception\ConfigException;
-use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
 
 class EventRegisterTest extends TestCase
 {
+    /** @coversDefaultClass \Micronative\ServiceSchema\Config\EventRegister */
+    protected $eventRegister;
+
     /** @var string */
     protected $testDir;
 
-    /** @var EventRegister $eventRegister */
-    protected $eventRegister;
-
-    /**
-     * @coversDefaultClass \Micronative\ServiceSchema\Config\EventRegister
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -103,20 +99,15 @@ class EventRegisterTest extends TestCase
      * @covers \Micronative\ServiceSchema\Config\EventRegister::setConfigs
      * @covers \Micronative\ServiceSchema\Config\EventRegister::getEvents
      * @covers \Micronative\ServiceSchema\Config\EventRegister::setEvents
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function testGetterAndSetters()
     {
-        $this->eventRegister->loadEvents();
-        $this->eventRegister->registerEvent("Event.Name", ["SomeServiceClass"]);
+        $configs = [];
+        $this->eventRegister->setConfigs($configs);
+        $this->assertSame($configs, $this->eventRegister->getConfigs());
 
-        $entity = $this->eventRegister->getConfigs();
-        $this->eventRegister->setConfigs($entity);
-        $this->assertSame($entity, $this->eventRegister->getConfigs());
-
-        $entity = $this->eventRegister->getEvents();
-        $this->eventRegister->setEvents($entity);
-        $this->assertSame($entity, $this->eventRegister->getEvents());
+        $events = [];
+        $this->eventRegister->setEvents($events);
+        $this->assertSame($events, $this->eventRegister->getEvents());
     }
 }

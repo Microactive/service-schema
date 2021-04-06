@@ -9,6 +9,9 @@ use Micronative\ServiceSchema\Main\Processor;
 
 class SchemaExporterTest extends TestCase
 {
+    /** @coversDefaultClass \Micronative\ServiceSchema\Json\SchemaExporter */
+    protected $schemaExporter;
+
     /** @var string */
     protected $testDir;
 
@@ -18,12 +21,9 @@ class SchemaExporterTest extends TestCase
     /** @var \Micronative\ServiceSchema\Main\Processor */
     protected $processor;
 
-    /** @var \Micronative\ServiceSchema\Json\SchemaExporter */
-    protected $schemaExporter;
-
-
     /**
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
      */
     public function setUp(): void
     {
@@ -40,11 +40,37 @@ class SchemaExporterTest extends TestCase
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::export
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      */
-    public function testExport()
+    public function testExportJson()
     {
         $this->schemaExporter = new SchemaExporter($this->processor);
 
         $result = $this->schemaExporter->export(schemaExporter::RETURN_JSON);
         $this->assertStringContainsString('{"CreateContact":{"type":"object","properties":{"name":{"type":"string","minLength":0,"maxLength":256}', $result);
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Json\SchemaExporter::__construct
+     * @covers \Micronative\ServiceSchema\Json\SchemaExporter::export
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    public function testExportArray()
+    {
+        $this->schemaExporter = new SchemaExporter($this->processor);
+
+        $result = $this->schemaExporter->export(schemaExporter::RETURN_ARRAY);
+        $this->assertIsArray($result);
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Json\SchemaExporter::__construct
+     * @covers \Micronative\ServiceSchema\Json\SchemaExporter::export
+     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     */
+    public function testExportDefault()
+    {
+        $this->schemaExporter = new SchemaExporter($this->processor);
+
+        $result = $this->schemaExporter->export();
+        $this->assertIsArray($result);
     }
 }

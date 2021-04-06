@@ -45,27 +45,9 @@ class SchemaExporter
         switch ($returnType) {
             case self::RETURN_JSON:
                 return JsonReader::encode($schemas);
-                break;
             case self::RETURN_ARRAY:
             default:
                 return $schemas;
-                break;
         }
-    }
-
-    /**
-     * @param string $dir
-     * @return array|false|string
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     */
-    public static function exportEventSchema(string $dir)
-    {
-        $files = array_diff(scandir($dir), array('.', '..'));
-        $schemas = [];
-        foreach ($files as $file) {
-            $schemas[basename($file, '.' . self::SCHEMA_EXTENSION)] = JsonReader::decode(JsonReader::read($dir . '/' . $file), true);
-        }
-
-        return $schemas;
     }
 }
