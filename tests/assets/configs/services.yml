@@ -9,3 +9,5 @@
     - Micronative\ServiceSchema\Tests\Service\Samples\PushMessageToLog
 - service: Micronative\ServiceSchema\Tests\Service\Samples\CreateTask
   schema: /assets/schemas/CreateTask.json
+- service: Micronative\ServiceSchema\Tests\Service\Samples\InvalidService
+  schema: /assets/schemas/CreateTask.json

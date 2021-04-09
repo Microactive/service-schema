@@ -4,7 +4,7 @@ namespace Micronative\ServiceSchema\Service;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 
-interface RollbackInterface
+interface RollbackInterface extends ServiceInterface
 {
 
     /**

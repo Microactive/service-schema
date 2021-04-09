@@ -87,7 +87,7 @@ class Processor implements ProcessorInterface
 
         foreach ($registeredEvents as $eventName => $serviceNames) {
             if (empty($serviceNames)) {
-                continue;
+                throw new ProcessorException(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
             }
 
             foreach ($serviceNames as $serviceName) {
@@ -187,7 +187,7 @@ class Processor implements ProcessorInterface
 
         foreach ($registeredEvents as $eventName => $services) {
             if (empty($services)) {
-                continue;
+                throw new ProcessorException(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
             }
 
             foreach ($services as $serviceName) {

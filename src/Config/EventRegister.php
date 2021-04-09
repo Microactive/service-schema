@@ -74,7 +74,7 @@ class EventRegister
      */
     public function retrieveEvent(string $eventName = null)
     {
-        if (isset($this->events[$eventName])) {
+        if (array_key_exists($eventName, $this->events)) {
             return [$eventName => $this->events[$eventName]];
         }
 
@@ -141,10 +141,14 @@ class EventRegister
     /**
      * @param array|null $events
      */
-    protected function loadFromArray(array $events = null){
+    protected function loadFromArray(array $events = null)
+    {
         foreach ($events as $event) {
+            if(empty($event['event'])){
+                continue;
+            }
             $eventName = $event['event'];
-            $services = $event['services'];
+            $services = isset($event['services']) ? $event['services'] : null;
             $this->registerEvent($eventName, $services);
         }
     }
