@@ -10,8 +10,6 @@ class CreateTask extends AbstractService implements ServiceInterface
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo "CreateTask";
-
         return true;
     }
 }

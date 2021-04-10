@@ -11,15 +11,11 @@ class CreateContact extends AbstractService implements ServiceInterface, Rollbac
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo "CreateContact";
-
         return new SampleEvent();
     }
 
     public function rollback(AbstractEvent $event = null)
     {
-       echo "rollback";
-
        return true;
     }
 }

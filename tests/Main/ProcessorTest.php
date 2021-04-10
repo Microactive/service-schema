@@ -14,8 +14,6 @@ use Micronative\ServiceSchema\Tests\Event\SampleEvent;
 use Micronative\ServiceSchema\Main\Exception\ProcessorException;
 use PHPUnit\Framework\TestCase;
 
-use function Webmozart\Assert\Tests\StaticAnalysis\null;
-
 class ProcessorTest extends TestCase
 {
     /** @coversDefaultClass \Micronative\ServiceSchema\Main\Processor */

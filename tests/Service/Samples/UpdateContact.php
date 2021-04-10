@@ -10,8 +10,6 @@ class UpdateContact extends AbstractService implements ServiceInterface
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo "UpdateContact";
-
         return true;
     }
 }

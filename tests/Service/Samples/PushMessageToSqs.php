@@ -10,8 +10,6 @@ class PushMessageToSqs extends AbstractService implements ServiceInterface
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo "Push message to SQS";
-
         return true;
     }
 }
