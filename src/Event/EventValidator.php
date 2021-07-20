@@ -18,7 +18,7 @@ class EventValidator
      */
     public function __construct(Validator $validator = null)
     {
-        $this->validator = $validator ?: new  Validator();
+        $this->validator = $validator ?? new  Validator();
     }
 
     /**

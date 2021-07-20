@@ -46,7 +46,6 @@ class ServiceValidator
         }
 
         $schema = JsonReader::decode(JsonReader::read($this->schemaDir . $service->getJsonSchema()));
-
         $this->validator->validate($jsonObject, $schema, Constraint::CHECK_MODE_APPLY_DEFAULTS);
 
         return $this->validator;
