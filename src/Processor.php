@@ -1,12 +1,12 @@
 <?php
 
-namespace Micronative\ServiceSchema\Main;
+namespace Micronative\ServiceSchema;
 
 use Micronative\ServiceSchema\Config\EventRegister;
 use Micronative\ServiceSchema\Config\ServiceRegister;
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Json\JsonReader;
-use Micronative\ServiceSchema\Main\Exception\ProcessorException;
+use Micronative\ServiceSchema\Exceptions\ProcessorException;
 use Micronative\ServiceSchema\Service\Exception\ServiceException;
 use Micronative\ServiceSchema\Service\RollbackInterface;
 use Micronative\ServiceSchema\Service\ServiceFactory;
@@ -71,7 +71,7 @@ class Processor implements ProcessorInterface
      * @param bool $return if yes return first service result
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
      */
     public function process(AbstractEvent $event = null, array $filteredEvents = null, bool $return = false)
@@ -175,7 +175,7 @@ class Processor implements ProcessorInterface
      * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
      */
     public function rollback(AbstractEvent $event = null)
@@ -243,7 +243,7 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Config\EventRegister|null $eventRegister
-     * @return \Micronative\ServiceSchema\Main\Processor
+     * @return \Micronative\ServiceSchema\Processor
      */
     public function setEventRegister(EventRegister $eventRegister = null)
     {
@@ -262,7 +262,7 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Config\ServiceRegister|null $serviceRegister
-     * @return \Micronative\ServiceSchema\Main\Processor
+     * @return \Micronative\ServiceSchema\Processor
      */
     public function setServiceRegister(ServiceRegister $serviceRegister = null)
     {
@@ -281,7 +281,7 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Service\ServiceFactory|null $serviceFactory
-     * @return \Micronative\ServiceSchema\Main\Processor
+     * @return \Micronative\ServiceSchema\Processor
      */
     public function setServiceFactory(ServiceFactory $serviceFactory = null)
     {
@@ -300,7 +300,7 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Service\ServiceValidator|null $serviceValidator
-     * @return \Micronative\ServiceSchema\Main\Processor
+     * @return \Micronative\ServiceSchema\Processor
      */
     public function setServiceValidator(ServiceValidator $serviceValidator = null)
     {

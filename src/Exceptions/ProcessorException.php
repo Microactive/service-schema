@@ -1,9 +1,7 @@
 <?php
 
 
-namespace Micronative\ServiceSchema\Main\Exception;
-
-use Micronative\ServiceSchema\Exceptions\ServiceSchemaException;
+namespace Micronative\ServiceSchema\Exceptions;
 
 class ProcessorException extends ServiceSchemaException
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Main;
+namespace Micronative\ServiceSchema;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\ServiceInterface;
@@ -15,7 +15,7 @@ interface ProcessorInterface
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function process(AbstractEvent $event, array $filteredEvents = null, bool $return = false);
 
@@ -23,7 +23,7 @@ interface ProcessorInterface
      * @param string|\Micronative\ServiceSchema\Event\AbstractEvent $event
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function rollback(AbstractEvent $event);
 
