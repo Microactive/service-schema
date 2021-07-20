@@ -9,6 +9,18 @@ use Micronative\ServiceSchema\Json\JsonReader;
 
 class EventValidator
 {
+    /** @var \JsonSchema\Validator */
+    private $validator;
+
+    /**
+     * EventValidator constructor.
+     * @param \JsonSchema\Validator|null $validator
+     */
+    public function __construct(Validator $validator = null)
+    {
+        $this->validator = $validator ?: new  Validator();
+    }
+
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
      * @param string|null $eventSchema
@@ -16,7 +28,7 @@ class EventValidator
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
      * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
      */
-    public static function validate(AbstractEvent $event = null, ?string $eventSchema = null)
+    public function validate(AbstractEvent $event = null, ?string $eventSchema = null)
     {
         $jsonObject = JsonReader::decode($event->toJson());
         if (empty($jsonObject)) {
@@ -28,14 +40,15 @@ class EventValidator
         }
 
         $schema = JsonReader::decode(JsonReader::read($eventSchema));
-        $validator = new Validator();
-        $validator->validate($jsonObject, $schema, Constraint::CHECK_MODE_APPLY_DEFAULTS);
+        $this->validator->validate($jsonObject, $schema, Constraint::CHECK_MODE_APPLY_DEFAULTS);
 
-        if (!$validator->isValid()) {
-            throw new EventValidatorException(EventValidatorException::INVALIDATED_EVENT_MESSAGE . json_encode($validator->getErrors()));
+        if (!$this->validator->isValid()) {
+            throw new EventValidatorException(
+                EventValidatorException::INVALIDATED_EVENT_MESSAGE . json_encode($this->validator->getErrors())
+            );
         }
 
-        return $validator->isValid();
+        return $this->validator->isValid();
     }
 
 }

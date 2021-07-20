@@ -18,6 +18,7 @@ class EventValidatorTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
+        $this->validator = new EventValidator();
     }
 
     /**
@@ -29,7 +30,7 @@ class EventValidatorTest extends TestCase
         $event = new SampleInvalidEvent();
         $this->expectException(EventValidatorException::class);
         $this->expectExceptionMessage(EventValidatorException::INVALID_JSON_STRING);
-        EventValidator::validate($event);
+        $this->validator->validate($event);
     }
 
     /**
@@ -41,7 +42,7 @@ class EventValidatorTest extends TestCase
         $event = new SampleEvent();
         $this->expectException(EventValidatorException::class);
         $this->expectExceptionMessage(EventValidatorException::MISSING_EVENT_SCHEMA);
-        EventValidator::validate($event);
+        $this->validator->validate($event);
     }
 
     /**
@@ -53,7 +54,7 @@ class EventValidatorTest extends TestCase
         $event = new SampleEvent();
         $this->expectException(EventValidatorException::class);
         $this->expectExceptionMessageMatches("%".EventValidatorException::INVALIDATED_EVENT_MESSAGE."%");
-        EventValidator::validate($event, $this->testDir.'/assets/schemas/UpdateContact.json');
+        $this->validator->validate($event, $this->testDir.'/assets/schemas/UpdateContact.json');
     }
 
     /**
@@ -64,7 +65,7 @@ class EventValidatorTest extends TestCase
     public function testValidateSuccessful(){
         $event = new SampleEvent();
         $event->setName('User.Created')->setPayload((object) ["name" => "Ken"]);
-        $validated = EventValidator::validate($event, $this->testDir.'/assets/schemas/SampleEvent.json');
+        $validated = $this->validator->validate($event, $this->testDir.'/assets/schemas/SampleEvent.json');
         $this->assertTrue($validated);
     }
 }
