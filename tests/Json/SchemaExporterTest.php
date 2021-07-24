@@ -5,7 +5,7 @@ namespace Micronative\ServiceSchema\Tests\Json;
 use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Json\SchemaExporter;
-use Micronative\ServiceSchema\Main\Processor;
+use Micronative\ServiceSchema\Processor;
 
 class SchemaExporterTest extends TestCase
 {
@@ -18,7 +18,7 @@ class SchemaExporterTest extends TestCase
     /** @var string */
     protected $message;
 
-    /** @var \Micronative\ServiceSchema\Main\Processor */
+    /** @var \Micronative\ServiceSchema\Processor */
     protected $processor;
 
     /**

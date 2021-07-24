@@ -41,9 +41,9 @@ class EventConfig
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getServiceClasses(): array
+    public function getServiceClasses(): ?array
     {
         return $this->serviceClasses;
     }

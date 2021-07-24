@@ -19,11 +19,11 @@ class ServiceConfig
     /**
      * ServiceConfig constructor.
      * @param string $class
-     * @param string $alias
+     * @param string|null $alias
      * @param string|null $schema
      * @param array|null $callbacks
      */
-    public function __construct(string $class, string $alias, string $schema = null, array $callbacks = null)
+    public function __construct(string $class, string $alias = null, string $schema = null, array $callbacks = null)
     {
         $this->class = $class;
         $this->alias = $alias;
@@ -51,9 +51,9 @@ class ServiceConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAlias(): string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -71,9 +71,9 @@ class ServiceConfig
 
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSchema(): string
+    public function getSchema(): ?string
     {
         return $this->schema;
     }
@@ -90,9 +90,9 @@ class ServiceConfig
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getCallbacks(): array
+    public function getCallbacks(): ?array
     {
         return $this->callbacks;
     }

@@ -1,22 +1,22 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Main;
+namespace Micronative\ServiceSchema\Tests;
 
-use Micronative\ServiceSchema\Config\EventRegister;
-use Micronative\ServiceSchema\Config\ServiceRegister;
+use Micronative\ServiceSchema\Config\EventConfigRegister;
+use Micronative\ServiceSchema\Config\ServiceConfigRegister;
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Json\JsonReader;
-use Micronative\ServiceSchema\Main\Processor;
-use Micronative\ServiceSchema\Service\Exceptions\CommandException;
+use Micronative\ServiceSchema\Processor;
+use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceValidator;
 use Micronative\ServiceSchema\Tests\Event\SampleEvent;
-use Micronative\ServiceSchema\Main\Exception\ProcessorException;
+use Micronative\ServiceSchema\Exceptions\ProcessorException;
 use PHPUnit\Framework\TestCase;
 
 class ProcessorTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\ServiceSchema\Main\Processor */
+    /** @coversDefaultClass \Micronative\ServiceSchema\Processor */
     protected $processor;
 
     /** @var string */
@@ -29,7 +29,7 @@ class ProcessorTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->testDir = dirname(dirname(__FILE__));
+        $this->testDir = dirname(__FILE__);
         $this->processor = new Processor(
             [$this->testDir . "/assets/configs/events.json", $this->testDir . "/assets/configs/events.yml"],
             [$this->testDir . "/assets/configs/services.json", $this->testDir . "/assets/configs/services.yml"],
@@ -38,12 +38,12 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcess()
     {
@@ -54,12 +54,12 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessWithReturn()
     {
@@ -70,28 +70,28 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessFailed()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.Failed.json"), true);
         $event = new SampleEvent($data);
-        $this->expectException(CommandException::class);
+        $this->expectException(ServiceException::class);
         $this->processor->process($event);
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessWithFilteredEvent()
     {
@@ -103,12 +103,12 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessWithNoneRegisteredEvent()
     {
@@ -120,12 +120,12 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessWithEmptyServiceEvent()
     {
@@ -137,12 +137,12 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessWithNoneExistingServiceEvent()
     {
@@ -152,12 +152,12 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::process
-     * @covers \Micronative\ServiceSchema\Main\Processor::runService
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::process
+     * @covers \Micronative\ServiceSchema\Processor::runService
+     * @covers \Micronative\ServiceSchema\Processor::runCallbacks
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessWithInvalidServiceClass()
     {
@@ -167,11 +167,11 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollback
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollbackService
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::rollback
+     * @covers \Micronative\ServiceSchema\Processor::rollbackService
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollback()
     {
@@ -182,25 +182,25 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollback
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollbackService
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::rollback
+     * @covers \Micronative\ServiceSchema\Processor::rollbackService
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithInvalidValidation()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.Failed.json"), true);
         $event = new SampleEvent($data);
-        $this->expectException(CommandException::class);
+        $this->expectException(ServiceException::class);
         $this->processor->rollback($event);
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::rollback
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithInvalidServiceClass()
     {
@@ -210,10 +210,10 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::rollback
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithNoneExistingServiceEvent()
     {
@@ -223,10 +223,10 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::rollback
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithEmptyServiceEvent()
     {
@@ -238,10 +238,10 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @covers \Micronative\ServiceSchema\Processor::rollback
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Main\Exception\ProcessorException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithNoneRegisteredEvent()
     {
@@ -252,41 +252,15 @@ class ProcessorTest extends TestCase
         $this->processor->rollback($event);
     }
 
-    /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     */
-    public function testRunCallbacksWithEmpty()
-    {
-        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json"), true);
-        $event = new SampleEvent($data);
-        $result = $this->processor->runCallbacks($event);
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @covers \Micronative\ServiceSchema\Main\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     */
-    public function testRunCallbacksWithInvalidService()
-    {
-        $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json"), true);
-        $event = new SampleEvent($data);
-        $result = $this->processor->runCallbacks($event, ['Micronative\ServiceSchema\Tests\Service\Samples\InvalidService']);
-        $this->assertTrue($result);
-    }
-
     public function testSettersAndGetters()
     {
-        $eventRegister = new EventRegister();
-        $this->processor->setEventRegister($eventRegister);
-        $this->assertSame($eventRegister, $this->processor->getEventRegister());
+        $eventRegister = new EventConfigRegister();
+        $this->processor->setEventConfigRegister($eventRegister);
+        $this->assertSame($eventRegister, $this->processor->getEventConfigRegister());
 
-        $serviceRegister = new ServiceRegister();
-        $this->processor->setServiceRegister($serviceRegister);
-        $this->assertSame($serviceRegister, $this->processor->getServiceRegister());
+        $serviceRegister = new ServiceConfigRegister();
+        $this->processor->setServiceConfigRegister($serviceRegister);
+        $this->assertSame($serviceRegister, $this->processor->getServiceConfigRegister());
 
         $serviceFactory = new ServiceFactory();
         $this->processor->setServiceFactory($serviceFactory);

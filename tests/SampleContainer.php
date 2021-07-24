@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Main;
+namespace Micronative\ServiceSchema\Tests;
 
 use Psr\Container\ContainerInterface;
 

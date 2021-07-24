@@ -2,12 +2,12 @@
 
 namespace Micronative\ServiceSchema\Json;
 
-use Micronative\ServiceSchema\Main\Processor;
+use Micronative\ServiceSchema\Processor;
 
 class SchemaExporter
 {
 
-    /** @var \Micronative\ServiceSchema\Main\Processor */
+    /** @var \Micronative\ServiceSchema\Processor */
     protected $processor;
 
     const SCHEMA_EXTENSION = 'json';
@@ -17,7 +17,7 @@ class SchemaExporter
     /**
      * SchemaReader constructor.
      *
-     * @param \Micronative\ServiceSchema\Main\Processor|null $processor
+     * @param \Micronative\ServiceSchema\Processor|null $processor
      */
     public function __construct(Processor $processor = null)
     {
@@ -32,9 +32,9 @@ class SchemaExporter
     public function export(int $returnType = self::RETURN_ARRAY)
     {
         $files = [];
-        $services = $this->processor->getServiceRegister()->getServices();
-        foreach ($services as $service) {
-            $files[$service['schema']] = $this->processor->getServiceValidator()->getSchemaDir() . $service['schema'];
+        $serviceConfigs = $this->processor->getServiceConfigRegister()->getServiceConfigs();
+        foreach ($serviceConfigs as $config) {
+            $files[$config->getSchema()] = $this->processor->getServiceValidator()->getSchemaDir() . $config->getSchema();
         }
 
         $schemas = [];

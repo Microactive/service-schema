@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Service\ServiceValidator;
 use Micronative\ServiceSchema\Tests\Service\Samples\CreateContact;
-use Micronative\ServiceSchema\Service\Exceptions\CommandException;
+use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 
 class ServiceValidatorTest extends TestCase
 {
@@ -26,27 +26,27 @@ class ServiceValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::validate
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     public function testValidateWithEmptyJson()
     {
-        $this->expectException(CommandException::class);
-        $this->expectExceptionMessage(CommandException::MISSING_JSON_STRING);
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage(ServiceException::MISSING_JSON_STRING);
         $this->serviceValidator->validate();
     }
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::validate
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     public function testValidateWithEmptyJsonSchema()
     {
         $file = $this->testDir . "/assets/events/Users.afterSaveCommit.Create.json";
         $jsonObject = JsonReader::decode(JsonReader::read($file));
         $service = new CreateContact();
-        $this->expectException(CommandException::class);
-        $this->expectExceptionMessage(CommandException::MISSING_SERVICE_SCHEMA);
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage(ServiceException::MISSING_SERVICE_SCHEMA);
         $this->serviceValidator->validate($jsonObject, $service);
     }
 
@@ -57,7 +57,7 @@ class ServiceValidatorTest extends TestCase
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::getSchemaDir
      * @covers \Micronative\ServiceSchema\Service\ServiceValidator::setSchemaDir
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     public function testValidate()
     {

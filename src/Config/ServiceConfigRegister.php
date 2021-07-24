@@ -75,7 +75,7 @@ class ServiceConfigRegister
      * @param \Micronative\ServiceSchema\Config\ServiceConfig $serviceConfig
      * @return \Micronative\ServiceSchema\Config\ServiceConfigRegister
      */
-    private function registerServiceConfig(ServiceConfig $serviceConfig)
+    public function registerServiceConfig(ServiceConfig $serviceConfig)
     {
         $serviceClass = $serviceConfig->getClass();
         $this->serviceConfigs[$serviceClass] = $serviceConfig;

@@ -127,10 +127,10 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param array $filteredEvents
+     * @param array|null $filteredEvents
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
-    private function checkFilteredEvents(AbstractEvent $event, array $filteredEvents)
+    private function checkFilteredEvents(AbstractEvent $event, array $filteredEvents = null)
     {
         if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
             throw new ProcessorException(ProcessorException::FILTERED_EVENT_ONLY . json_encode($filteredEvents));

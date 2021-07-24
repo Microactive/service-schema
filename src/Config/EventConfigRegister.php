@@ -69,7 +69,7 @@ class EventConfigRegister
      * @param \Micronative\ServiceSchema\Config\EventConfig $eventConfig
      * @return \Micronative\ServiceSchema\Config\EventConfigRegister
      */
-    private function registerEventConfig(EventConfig $eventConfig)
+    public function registerEventConfig(EventConfig $eventConfig)
     {
         $eventName = $eventConfig->getName();
         if (!isset($this->eventConfigs[$eventName])) {
