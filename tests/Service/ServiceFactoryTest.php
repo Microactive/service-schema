@@ -2,7 +2,7 @@
 
 namespace Micronative\ServiceSchema\Tests\Service;
 
-use Micronative\ServiceSchema\Service\Exception\ServiceException;
+use Micronative\ServiceSchema\Service\Exceptions\CommandException;
 use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceInterface;
@@ -24,19 +24,19 @@ class ServiceFactoryTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
      */
     public function testCreateInvalidServiceClass()
     {
         $serviceClass = "\Micronative\ServiceSchema\Tests\Service\Samples\InvalidServiceClass";
         $schema = $this->testDir . "/assets/schemas/CreateContact.json";
-        $this->expectException(ServiceException::class);
+        $this->expectException(CommandException::class);
         $this->serviceFactory->createService($serviceClass, $schema);
     }
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
      */
     public function testCreateInvalidService()
     {
@@ -48,7 +48,7 @@ class ServiceFactoryTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
      */
     public function testCreateService()
     {

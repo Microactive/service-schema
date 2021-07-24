@@ -27,7 +27,7 @@ class SchemaExporter
     /**
      * @param int $returnType
      * @return array|string
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function export(int $returnType = self::RETURN_ARRAY)
     {

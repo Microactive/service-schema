@@ -26,7 +26,7 @@ class EventValidator
      * @param string|null $eventSchema
      * @return bool
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function validate(AbstractEvent $event = null, ?string $eventSchema = null)
     {

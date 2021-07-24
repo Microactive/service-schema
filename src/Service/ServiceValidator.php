@@ -5,7 +5,7 @@ namespace Micronative\ServiceSchema\Service;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\Validator;
 use Micronative\ServiceSchema\Json\JsonReader;
-use Micronative\ServiceSchema\Service\Exception\ServiceException;
+use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 
 class ServiceValidator
 {
@@ -18,12 +18,11 @@ class ServiceValidator
     /**
      * EventValidator constructor.
      *
-     * @param \JsonSchema\Validator|null $validator
      * @param string|null $schemaDir
      */
-    public function __construct(Validator $validator = null, string $schemaDir = null)
+    public function __construct(string $schemaDir = null)
     {
-        $this->validator = $validator ?? new Validator();
+        $this->validator = new Validator();
         $this->schemaDir = $schemaDir;
     }
 
@@ -31,8 +30,8 @@ class ServiceValidator
      * @param \stdClass|null $jsonObject
      * @param \Micronative\ServiceSchema\Service\ServiceInterface|null $service
      * @return \JsonSchema\Validator
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function validate(\stdClass &$jsonObject = null, ServiceInterface $service = null)
     {

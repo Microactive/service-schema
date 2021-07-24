@@ -2,7 +2,7 @@
 
 namespace Micronative\ServiceSchema\Json;
 
-use Micronative\ServiceSchema\Json\Exception\JsonException;
+use Micronative\ServiceSchema\Json\Exceptions\JsonException;
 
 class JsonReader implements JsonReaderInterface
 {
@@ -10,7 +10,7 @@ class JsonReader implements JsonReaderInterface
     /**
      * @param string|null $file
      * @return string
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public static function read(string $file = null)
     {
@@ -29,7 +29,7 @@ class JsonReader implements JsonReaderInterface
      * @param string|null $json
      * @param bool $assoc
      * @return array|mixed
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public static function decode(string $json = null, bool $assoc = false)
     {
@@ -44,7 +44,7 @@ class JsonReader implements JsonReaderInterface
      * @param null|mixed $content
      * @param int $flag
      * @return false|string
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public static function encode($content = null, $flag = JSON_UNESCAPED_SLASHES)
     {
@@ -59,7 +59,7 @@ class JsonReader implements JsonReaderInterface
      * @param string|null $file
      * @param string|null $content
      * @return bool|int
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public static function save(string $file = null, string $content = null)
     {

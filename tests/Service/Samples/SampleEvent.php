@@ -9,7 +9,7 @@ class SampleEvent extends AbstractEvent
 {
     /**
      * @return false|string
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function toJson()
     {

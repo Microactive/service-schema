@@ -2,12 +2,12 @@
 
 namespace Micronative\ServiceSchema;
 
-use Micronative\ServiceSchema\Config\EventRegister;
-use Micronative\ServiceSchema\Config\ServiceRegister;
+use Micronative\ServiceSchema\Command\ConsumeCommand;
+use Micronative\ServiceSchema\Command\RollbackCommand;
+use Micronative\ServiceSchema\Config\EventConfigRegister;
+use Micronative\ServiceSchema\Config\ServiceConfigRegister;
 use Micronative\ServiceSchema\Event\AbstractEvent;
-use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Exceptions\ProcessorException;
-use Micronative\ServiceSchema\Service\Exception\ServiceException;
 use Micronative\ServiceSchema\Service\RollbackInterface;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceInterface;
@@ -16,11 +16,11 @@ use Psr\Container\ContainerInterface;
 
 class Processor implements ProcessorInterface
 {
-    /** @var \Micronative\ServiceSchema\Config\EventRegister */
-    protected $eventRegister;
+    /** @var \Micronative\ServiceSchema\Config\EventConfigRegister */
+    protected $eventConfigRegister;
 
-    /** @var \Micronative\ServiceSchema\Config\ServiceRegister */
-    protected $serviceRegister;
+    /** @var \Micronative\ServiceSchema\Config\ServiceConfigRegister */
+    protected $serviceConfigRegister;
 
     /** @var \Micronative\ServiceSchema\Service\ServiceFactory */
     protected $serviceFactory;
@@ -38,31 +38,31 @@ class Processor implements ProcessorInterface
      * @param array|null $serviceConfigs
      * @param string|null $schemaDir
      * @param \Psr\Container\ContainerInterface|null $container
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
     public function __construct(
         array $eventConfigs = null,
         array $serviceConfigs = null,
         string $schemaDir = null,
-        ContainerInterface $container = null)
-    {
-        $this->eventRegister = new EventRegister($eventConfigs);
-        $this->serviceRegister = new ServiceRegister($serviceConfigs);
+        ContainerInterface $container = null
+    ) {
+        $this->eventConfigRegister = new EventConfigRegister($eventConfigs);
+        $this->serviceConfigRegister = new ServiceConfigRegister($serviceConfigs);
         $this->serviceFactory = new ServiceFactory();
-        $this->serviceValidator = new ServiceValidator(null, $schemaDir);
+        $this->serviceValidator = new ServiceValidator($schemaDir);
         $this->container = $container;
         $this->loadConfigs();
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     protected function loadConfigs()
     {
-        $this->eventRegister->loadEvents();
-        $this->serviceRegister->loadServices();
+        $this->eventConfigRegister->loadEventConfigs();
+        $this->serviceConfigRegister->loadServiceConfigs();
     }
 
     /**
@@ -70,48 +70,90 @@ class Processor implements ProcessorInterface
      * @param array|null $filteredEvents
      * @param bool $return if yes return first service result
      * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
      */
     public function process(AbstractEvent $event = null, array $filteredEvents = null, bool $return = false)
     {
-        if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
-            throw new ProcessorException(ProcessorException::FILTERED_EVENT_ONLY . json_encode($filteredEvents));
-        }
-
-        $registeredEvents = $this->eventRegister->retrieveEvent($event->getName());
-        if (empty($registeredEvents)) {
-            throw new ProcessorException(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
-        }
-
-        foreach ($registeredEvents as $eventName => $serviceNames) {
-            if (empty($serviceNames)) {
-                throw new ProcessorException(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
+        $this->checkFilteredEvents($event, $filteredEvents);
+        $serviceClasses = $this->retrieveServiceClasses($event);
+        foreach ($serviceClasses as $class) {
+            if (empty($serviceConfig = $this->serviceConfigRegister->retrieveServiceConfig($class))) {
+                continue;
             }
 
-            foreach ($serviceNames as $serviceName) {
-                $registeredService = $this->serviceRegister->retrieveService($serviceName);
-                if (empty($registeredService)) {
-                    continue;
-                }
+            if (empty($service = $this->serviceFactory->createService($serviceConfig, $this->container))) {
+                continue;
+            }
 
-                $jsonSchema = $registeredService[$serviceName]['schema'];
-                $callbacks = $registeredService[$serviceName]['callbacks'];
-                $service = $this->serviceFactory->createService($serviceName, $jsonSchema, $this->container);
-                if (empty($service)) {
-                    continue;
-                }
+            $callbacks = $serviceConfig->getCallbacks();
+            if ($return === true) {
+                return $this->runService($event, $service, $callbacks, $return);
+            }
 
-                if ($return === true) {
-                    return $this->runService($event, $service, $callbacks, $return);
-                }
+            $this->runService($event, $service, $callbacks);
+        }
 
-                $this->runService($event, $service, $callbacks);
+        return true;
+    }
+
+    /**
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @return bool
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     */
+    public function rollback(AbstractEvent $event)
+    {
+        $serviceClasses = $this->retrieveServiceClasses($event);
+        foreach ($serviceClasses as $class) {
+            if (empty($serviceConfig = $this->serviceConfigRegister->retrieveServiceConfig($class))) {
+                continue;
+            }
+
+            if (empty($service = $this->serviceFactory->createService($serviceConfig, $this->container))) {
+                continue;
+            }
+
+            if ($service instanceof RollbackInterface) {
+                $this->rollbackService($event, $service);
             }
         }
 
         return true;
+    }
+
+    /**
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @param array $filteredEvents
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     */
+    private function checkFilteredEvents(AbstractEvent $event, array $filteredEvents)
+    {
+        if (!empty($filteredEvents) && !in_array($event->getName(), $filteredEvents)) {
+            throw new ProcessorException(ProcessorException::FILTERED_EVENT_ONLY . json_encode($filteredEvents));
+        }
+    }
+
+    /**
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @return string[]
+     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     */
+    private function retrieveServiceClasses(AbstractEvent $event)
+    {
+        $eventConfig = $this->eventConfigRegister->retrieveEventConfig($event->getName());
+        if (empty($eventConfig)) {
+            throw new ProcessorException(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
+        }
+
+        if (empty($serviceClasses = $eventConfig->getServiceClasses())) {
+            throw new ProcessorException(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
+        }
+
+        return $serviceClasses;
     }
 
     /**
@@ -120,22 +162,17 @@ class Processor implements ProcessorInterface
      * @param array|null $callbacks
      * @param bool $return
      * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
      */
-    public function runService(AbstractEvent $event = null, ServiceInterface $service = null, array $callbacks = null, bool $return = false)
-    {
-        $json = JsonReader::decode($event->toJson());
-        $validator = $this->serviceValidator->validate($json, $service);
-        if (!$validator->isValid()) {
-            throw  new ServiceException(sprintf(ServiceException::INVALIDATED_JSON_STRING, $service->getJsonSchema(), json_encode($validator->getErrors())));
-        }
-
-        if (isset($json->payload)) {
-            $event->setPayload($json->payload);
-        }
-
-        $result = $service->consume($event);
+    private function runService(
+        AbstractEvent $event,
+        ServiceInterface $service,
+        array $callbacks = null,
+        bool $return = false
+    ) {
+        $consumeCommand = new ConsumeCommand($this->serviceValidator, $service, $event);
+        $result = $consumeCommand->execute();
         if ($return === true) {
             return $result;
         }
@@ -149,124 +186,76 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
-     * @param array|null $callbacks
-     * @return bool
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @param \Micronative\ServiceSchema\Service\RollbackInterface|null $service
+     * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
      */
-    public function runCallbacks(AbstractEvent $event = null, array $callbacks = null)
+    private function rollbackService(AbstractEvent $event, RollbackInterface $service)
     {
-        if (empty($callbacks)) {
-            return true;
-        }
+        $rollbackCommand = new RollbackCommand($this->serviceValidator, $service, $event);
 
-        foreach ($callbacks as $callback) {
-            $service = $this->serviceFactory->createService($callback, null, $this->container);
-            if (empty($service)) {
+        return $rollbackCommand->execute();
+    }
+
+    /**
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @param array $callbacks
+     * @return bool
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     */
+    private function runCallbacks(AbstractEvent $event, array $callbacks)
+    {
+        foreach ($callbacks as $class) {
+            if (empty($serviceConfig = $this->serviceConfigRegister->retrieveServiceConfig($class))) {
                 continue;
             }
 
-            $service->consume($event);
+            if ($service = $this->serviceFactory->createService($serviceConfig, $this->container)) {
+                continue;
+            }
+            $consumeCommand = new ConsumeCommand($this->serviceValidator, $service, $event);
+            $consumeCommand->execute();
         }
 
         return true;
     }
 
     /**
-     * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
-     * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @return \Micronative\ServiceSchema\Config\EventConfigRegister
      */
-    public function rollback(AbstractEvent $event = null)
+    public function getEventConfigRegister()
     {
-        $registeredEvents = $this->eventRegister->retrieveEvent($event->getName());
-        if (empty($registeredEvents)) {
-            throw new ProcessorException(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
-        }
-
-        foreach ($registeredEvents as $eventName => $services) {
-            if (empty($services)) {
-                throw new ProcessorException(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
-            }
-
-            foreach ($services as $serviceName) {
-                $registerService = $this->serviceRegister->retrieveService($serviceName);
-                if (empty($registerService)) {
-                    continue;
-                }
-
-                $jsonSchema = $registerService[$serviceName]['schema'];
-                $service = $this->serviceFactory->createService($serviceName, $jsonSchema, $this->container);
-                if (empty($service)) {
-                    continue;
-                }
-
-                if ($service instanceof RollbackInterface) {
-                    $this->rollbackService($event, $service);
-                }
-            }
-        }
-
-        return true;
+        return $this->eventConfigRegister;
     }
 
     /**
-     * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
-     * @param \Micronative\ServiceSchema\Service\RollbackInterface|null $service
-     * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
-     */
-    public function rollbackService(AbstractEvent $event = null, RollbackInterface $service = null)
-    {
-        $json = JsonReader::decode($event->toJson());
-        $validator = $this->serviceValidator->validate($json, $service);
-        if (!$validator->isValid()) {
-            throw  new ServiceException(sprintf(ServiceException::INVALIDATED_JSON_STRING, $service->getJsonSchema(), json_encode($validator->getErrors())));
-        }
-
-        if (isset($json->payload)) {
-            $event->setPayload($json->payload);
-        }
-
-        return $service->rollback($event);
-    }
-
-    /**
-     * @return \Micronative\ServiceSchema\Config\EventRegister
-     */
-    public function getEventRegister()
-    {
-        return $this->eventRegister;
-    }
-
-    /**
-     * @param \Micronative\ServiceSchema\Config\EventRegister|null $eventRegister
+     * @param \Micronative\ServiceSchema\Config\EventConfigRegister|null $eventConfigRegister
      * @return \Micronative\ServiceSchema\Processor
      */
-    public function setEventRegister(EventRegister $eventRegister = null)
+    public function setEventConfigRegister(EventConfigRegister $eventConfigRegister = null)
     {
-        $this->eventRegister = $eventRegister;
+        $this->eventConfigRegister = $eventConfigRegister;
 
         return $this;
     }
 
     /**
-     * @return \Micronative\ServiceSchema\Config\ServiceRegister
+     * @return \Micronative\ServiceSchema\Config\ServiceConfigRegister
      */
-    public function getServiceRegister()
+    public function getServiceConfigRegister()
     {
-        return $this->serviceRegister;
+        return $this->serviceConfigRegister;
     }
 
     /**
-     * @param \Micronative\ServiceSchema\Config\ServiceRegister|null $serviceRegister
+     * @param \Micronative\ServiceSchema\Config\ServiceConfigRegister|null $serviceConfigRegister
      * @return \Micronative\ServiceSchema\Processor
      */
-    public function setServiceRegister(ServiceRegister $serviceRegister = null)
+    public function setServiceConfigRegister(ServiceConfigRegister $serviceConfigRegister = null)
     {
-        $this->serviceRegister = $serviceRegister;
+        $this->serviceConfigRegister = $serviceConfigRegister;
 
         return $this;
     }
@@ -324,7 +313,7 @@ class Processor implements ProcessorInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+
         return $this;
     }
-
 }

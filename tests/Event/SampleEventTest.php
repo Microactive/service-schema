@@ -27,7 +27,7 @@ class SampleEventTest extends TestCase
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setName
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setPayload
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setData
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testToJson()
     {

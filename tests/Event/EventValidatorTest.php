@@ -24,7 +24,7 @@ class EventValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateWithEmptyEvent(){
         $event = new SampleInvalidEvent();
@@ -36,7 +36,7 @@ class EventValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateWithEmptySchema(){
         $event = new SampleEvent();
@@ -48,7 +48,7 @@ class EventValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateFailed(){
         $event = new SampleEvent();
@@ -60,7 +60,7 @@ class EventValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateSuccessful(){
         $event = new SampleEvent();

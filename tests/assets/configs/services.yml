@@ -2,12 +2,16 @@
   schema: /assets/schemas/CreateContact.json
   callbacks:
     - Micronative\ServiceSchema\Tests\Service\Samples\PushMessageToSqs
-    - Micronative\ServiceSchema\Tests\Service\Samples\PushMessageToLog
+    - pushMessageToLog
 - service: Micronative\ServiceSchema\Tests\Service\Samples\UpdateContact
   schema: /assets/schemas/UpdateContact.json
   callbacks:
-    - Micronative\ServiceSchema\Tests\Service\Samples\PushMessageToLog
+    - pushMessageToSqs
 - service: Micronative\ServiceSchema\Tests\Service\Samples\CreateTask
   schema: /assets/schemas/CreateTask.json
 - service: Micronative\ServiceSchema\Tests\Service\Samples\InvalidService
   schema: /assets/schemas/CreateTask.json
+- service: Micronative\ServiceSchema\Tests\Service\Samples\PushMessageToSqs
+  alias: pushMessageToSqs
+- service: Micronative\ServiceSchema\Tests\Service\Samples\PushMessageToLog
+  alias: pushMessageToLog

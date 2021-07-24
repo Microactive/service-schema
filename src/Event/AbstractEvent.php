@@ -37,7 +37,7 @@ abstract class AbstractEvent
      * Get the json representing the event
      *
      * @return false|string
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     abstract public function toJson();
 

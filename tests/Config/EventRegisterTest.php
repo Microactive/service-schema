@@ -3,12 +3,12 @@
 namespace Micronative\ServiceSchema\Tests\Config;
 
 use Micronative\ServiceSchema\Config\EventRegister;
-use Micronative\ServiceSchema\Config\Exception\ConfigException;
+use Micronative\ServiceSchema\Config\Exceptions\ConfigException;
 use PHPUnit\Framework\TestCase;
 
 class EventRegisterTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\ServiceSchema\Config\EventRegister */
+    /** @coversDefaultClass \Micronative\ServiceSchema\Config\EventConfigRegister */
     protected $eventRegister;
 
     /** @var string */
@@ -23,24 +23,24 @@ class EventRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventRegister::loadEvents
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
     public function testLoadEventsWithEmptyConfigs()
     {
-        $this->eventRegister->setConfigs(null);
+        $this->eventRegister->setConfigFiles(null);
         $this->eventRegister->loadEvents();
-        $this->assertEquals([], $this->eventRegister->getEvents());
+        $this->assertEquals([], $this->eventRegister->getEventConfigs());
     }
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventRegister::loadEvents
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
     public function testLoadEventsWithUnsupportedFiles()
     {
-        $this->eventRegister->setConfigs([$this->testDir . "/assets/configs/events.csv"]);
+        $this->eventRegister->setConfigFiles([$this->testDir . "/assets/configs/events.csv"]);
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage(ConfigException::UNSUPPORTED_FILE_FORMAT . 'csv');
         $this->eventRegister->loadEvents();
@@ -48,29 +48,29 @@ class EventRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventRegister::loadEvents
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
     public function testLoadEvents()
     {
         $this->eventRegister->loadEvents();
-        $events = $this->eventRegister->getEvents();
+        $events = $this->eventRegister->getEventConfigs();
         $this->assertTrue(is_array($events));
         $this->assertTrue(isset($events["Users.afterSaveCommit.Create"]));
         $this->assertTrue(isset($events["Users.afterSaveCommit.Update"]));
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Config\EventRegister::registerEvent
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @covers \Micronative\ServiceSchema\Config\EventRegister::registerEventConfig
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
     public function testRegisterEvent()
     {
         $this->eventRegister->loadEvents();
-        $this->eventRegister->registerEvent("Event.Name", ["FirstServiceClass"]);
-        $this->eventRegister->registerEvent("Event.Name", ["SecondServiceClass"]);
-        $events = $this->eventRegister->getEvents();
+        $this->eventRegister->registerEventConfig("Event.Name", ["FirstServiceClass"]);
+        $this->eventRegister->registerEventConfig("Event.Name", ["SecondServiceClass"]);
+        $events = $this->eventRegister->getEventConfigs();
 
         $this->assertTrue(is_array($events));
         $this->assertTrue(isset($events["Event.Name"]));
@@ -78,16 +78,16 @@ class EventRegisterTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Config\EventRegister::retrieveEvent
-     * @throws \Micronative\ServiceSchema\Json\Exception\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exception\ConfigException
+     * @covers \Micronative\ServiceSchema\Config\EventRegister::retrieveEventConfig
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
     public function testRetrieveEvent()
     {
         $this->eventRegister->loadEvents();
-        $this->eventRegister->registerEvent("Event.Name", ["SomeServiceClass"]);
-        $event = $this->eventRegister->retrieveEvent("Event.Name");
-        $noneExistingEvent = $this->eventRegister->retrieveEvent("Not.Existing.Name");
+        $this->eventRegister->registerEventConfig("Event.Name", ["SomeServiceClass"]);
+        $event = $this->eventRegister->retrieveEventConfig("Event.Name");
+        $noneExistingEvent = $this->eventRegister->retrieveEventConfig("Not.Existing.Name");
         $this->assertTrue(is_array($event));
         $this->assertTrue(isset($event["Event.Name"]));
         $this->assertEquals(["SomeServiceClass"], $event["Event.Name"]);
@@ -95,19 +95,19 @@ class EventRegisterTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Config\EventRegister::getConfigs
-     * @covers \Micronative\ServiceSchema\Config\EventRegister::setConfigs
-     * @covers \Micronative\ServiceSchema\Config\EventRegister::getEvents
-     * @covers \Micronative\ServiceSchema\Config\EventRegister::setEvents
+     * @covers \Micronative\ServiceSchema\Config\EventRegister::getConfigFiles
+     * @covers \Micronative\ServiceSchema\Config\EventRegister::setConfigFiles
+     * @covers \Micronative\ServiceSchema\Config\EventRegister::getEventConfigs
+     * @covers \Micronative\ServiceSchema\Config\EventRegister::setEventConfigs
      */
     public function testGetterAndSetters()
     {
         $configs = [];
-        $this->eventRegister->setConfigs($configs);
-        $this->assertSame($configs, $this->eventRegister->getConfigs());
+        $this->eventRegister->setConfigFiles($configs);
+        $this->assertSame($configs, $this->eventRegister->getConfigFiles());
 
         $events = [];
-        $this->eventRegister->setEvents($events);
-        $this->assertSame($events, $this->eventRegister->getEvents());
+        $this->eventRegister->setEventConfigs($events);
+        $this->assertSame($events, $this->eventRegister->getEventConfigs());
     }
 }

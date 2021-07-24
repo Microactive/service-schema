@@ -2,20 +2,22 @@
 
 namespace Micronative\ServiceSchema\Service;
 
-use Micronative\ServiceSchema\Service\Exception\ServiceException;
+use Micronative\ServiceSchema\Config\ServiceConfig;
+use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 use Psr\Container\ContainerInterface;
 
 class ServiceFactory
 {
     /**
-     * @param string|null $serviceClass
-     * @param string|null $schema
+     * @param \Micronative\ServiceSchema\Config\ServiceConfig $serviceConfig
      * @param \Psr\Container\ContainerInterface|null $container
-     * @return \Micronative\ServiceSchema\Service\ServiceInterface|false
-     * @throws \Micronative\ServiceSchema\Service\Exception\ServiceException
+     * @return false|\Micronative\ServiceSchema\Service\ServiceInterface
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
-    public function createService(string $serviceClass = null, string $schema = null, ContainerInterface $container = null)
+    public function createService(ServiceConfig $serviceConfig, ContainerInterface $container = null)
     {
+        $serviceClass = $serviceConfig->getClass();
+        $schema = $serviceConfig->getSchema();
         try {
             $service = new $serviceClass($container);
         } catch (\Error $exception) {
