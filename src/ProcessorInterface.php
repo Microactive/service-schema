@@ -3,7 +3,6 @@
 namespace Micronative\ServiceSchema;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
-use Micronative\ServiceSchema\Service\ServiceInterface;
 
 interface ProcessorInterface
 {
@@ -13,7 +12,7 @@ interface ProcessorInterface
      * @param bool $return return first service result
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function process(AbstractEvent $event, array $filteredEvents = null, bool $return = false);

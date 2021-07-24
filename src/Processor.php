@@ -72,7 +72,7 @@ class Processor implements ProcessorInterface
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     public function process(AbstractEvent $event = null, array $filteredEvents = null, bool $return = false)
     {
@@ -101,9 +101,9 @@ class Processor implements ProcessorInterface
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     public function rollback(AbstractEvent $event)
     {
@@ -163,7 +163,7 @@ class Processor implements ProcessorInterface
      * @param bool $return
      * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     private function runService(
         AbstractEvent $event,
@@ -189,7 +189,7 @@ class Processor implements ProcessorInterface
      * @param \Micronative\ServiceSchema\Service\RollbackInterface|null $service
      * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     private function rollbackService(AbstractEvent $event, RollbackInterface $service)
     {
@@ -203,7 +203,7 @@ class Processor implements ProcessorInterface
      * @param array $callbacks
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\CommandException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      */
     private function runCallbacks(AbstractEvent $event, array $callbacks)
     {
