@@ -14,7 +14,7 @@
 [link-codecov]: https://codecov.io/gh/micronative/service-schema
 [link-travis]: https://travis-ci.com/github/micronative/service-schema
 
-Service-schema was created as a tool to process messages from broker or between microservices, implementing event sourcing and Saga pattern.
+Service-schema was created as a tool to process messages from a broker or between microservices, implementing event sourcing and Saga pattern.
 Based on the concept of "event schema first", service-schema improves things a step further by introducing  schema for each service 
 in order to reuse services and schemas in different events through configuration:
 
