@@ -7,12 +7,12 @@
 
 [ico-license]: https://img.shields.io/github/license/nrk/predis.svg?style=flat-square
 [ico-version-stable]: https://img.shields.io/packagist/v/micronative/service-schema.svg
-[ico-travis]: https://travis-ci.org/micronative/service-schema.svg?branch=master
+[ico-travis]: https://travis-ci.com/micronative/service-schema.svg?branch=master
 [ico-codecov]: https://codecov.io/gh/micronative/service-schema/branch/master/graph/badge.svg
 
 [link-packagist]: https://packagist.org/packages/micronative/service-schema
 [link-codecov]: https://codecov.io/gh/micronative/service-schema
-[link-travis]: https://travis-ci.org/github/micronative/service-schema
+[link-travis]: https://travis-ci.com/github/micronative/service-schema
 
 Service-schema was created as a tool to process messages from broker or between microservices, implementing event sourcing and Saga pattern.
 Based on the concept of "event schema first", service-schema improves things a step further by introducing  schema for each service 
