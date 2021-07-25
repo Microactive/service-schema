@@ -16,6 +16,6 @@ class CreateContact extends AbstractService implements ServiceInterface, Rollbac
 
     public function rollback(AbstractEvent $event = null)
     {
-       return true;
+       return 'Contact creation has been rollback.';
     }
 }

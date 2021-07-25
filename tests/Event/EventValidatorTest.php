@@ -2,6 +2,7 @@
 
 namespace Micronative\ServiceSchema\Tests\Event;
 
+use JsonSchema\Validator;
 use Micronative\ServiceSchema\Event\EventValidator;
 use Micronative\ServiceSchema\Event\Exception\EventValidatorException;
 use PHPUnit\Framework\TestCase;
@@ -18,10 +19,12 @@ class EventValidatorTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
-        $this->validator = new EventValidator();
+        $this->validator = new EventValidator(new Validator());
+
     }
 
     /**
+     * @covers \Micronative\ServiceSchema\Event\EventValidator::__construct
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
@@ -35,8 +38,6 @@ class EventValidatorTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
-     * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateWithEmptySchema(){
         $event = new SampleEvent();
@@ -47,8 +48,6 @@ class EventValidatorTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
-     * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateFailed(){
         $event = new SampleEvent();
@@ -59,8 +58,6 @@ class EventValidatorTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
-     * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testValidateSuccessful(){
         $event = new SampleEvent();

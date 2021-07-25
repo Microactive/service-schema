@@ -20,7 +20,7 @@ class ServiceValidatorTest extends TestCase
     {
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
-        $this->serviceValidator = new ServiceValidator();
+        $this->serviceValidator = new ServiceValidator($this->testDir);
     }
 
     /**
@@ -64,7 +64,7 @@ class ServiceValidatorTest extends TestCase
         $file = $this->testDir . "/assets/events/Users.afterSaveCommit.Create.json";
         $jsonObject = JsonReader::decode(JsonReader::read($file));
         $service = new CreateContact();
-        $service->setJsonSchema($this->testDir . "/assets/schemas/CreateContact.json");
+        $service->setJsonSchema("/assets/schemas/CreateContact.json");
         $validator = $this->serviceValidator->validate($jsonObject, $service);
         $this->assertTrue($validator->isValid());
 

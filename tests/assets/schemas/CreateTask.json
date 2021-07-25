@@ -39,11 +39,7 @@
           }
         }
       },
-      "required": [
-        "user",
-        "account"
-      ],
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
   "required": [

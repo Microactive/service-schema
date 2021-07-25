@@ -36,7 +36,7 @@ class Processor implements ProcessorInterface
      *
      * @param array|null $eventConfigs
      * @param array|null $serviceConfigs
-     * @param string|null $schemaDir
+     * @param string|null $schemaDir a relative dir from where the schemas are stored
      * @param \Psr\Container\ContainerInterface|null $container
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException

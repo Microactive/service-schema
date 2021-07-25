@@ -28,8 +28,7 @@ class RollbackCommand extends AbstractCommand implements CommandInterface
      */
     public function execute()
     {
-        if ($this->validate()) {
-            return $this->service->rollback($this->event);
-        }
+        $this->validate();
+        return $this->service->rollback($this->event);
     }
 }

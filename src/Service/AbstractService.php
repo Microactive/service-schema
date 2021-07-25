@@ -29,12 +29,12 @@ abstract class AbstractService
     }
     
     /**
-     * @param string|null $schema
-     * @return AbstractService
+     * @param string|null $schemaFile
+     * @return \Micronative\ServiceSchema\Service\AbstractService
      */
-    public function setJsonSchema(string $schema = null)
+    public function setJsonSchema(string $schemaFile = null)
     {
-        $this->jsonSchema = $schema;
+        $this->jsonSchema = $schemaFile;
         
         return $this;
     }
@@ -49,7 +49,7 @@ abstract class AbstractService
     
     /**
      * @param string|null $name
-     * @return AbstractService
+     * @return \Micronative\ServiceSchema\Service\AbstractService
      */
     public function setName(string $name = null)
     {

@@ -18,7 +18,7 @@ class ServiceValidator
     /**
      * EventValidator constructor.
      *
-     * @param string|null $schemaDir
+     * @param string|null $schemaDir relative dir in the application
      */
     public function __construct(string $schemaDir = null)
     {

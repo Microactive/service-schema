@@ -28,8 +28,7 @@ class ConsumeCommand extends AbstractCommand implements CommandInterface
      */
     public function execute()
     {
-        if ($this->validate()) {
-            return $this->service->consume($this->event);
-        }
+        $this->validate();
+        return $this->service->consume($this->event);
     }
 }

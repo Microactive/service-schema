@@ -71,7 +71,7 @@ class ServiceConfigRegisterTest extends TestCase
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      */
-    public function testRegisterService()
+    public function testRegisterServiceConfigs()
     {
         $this->serviceConfigRegister->loadServiceConfigs();
         $config = new ServiceConfig("Service.Name", "serviceName","SomeServiceSchema");
@@ -86,6 +86,46 @@ class ServiceConfigRegisterTest extends TestCase
         $this->assertEquals('serviceName', $serviceConfig->getAlias());
         $this->assertEquals("SomeServiceSchema", $serviceConfig->getSchema());
         $this->assertNull($serviceConfig->getCallbacks());
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::retrieveServiceConfig
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     */
+    public function testRetrieveServiceConfig()
+    {
+        $this->serviceConfigRegister->loadServiceConfigs();
+        $config = new ServiceConfig("Service.Name", "serviceName","SomeServiceSchema");
+        $this->serviceConfigRegister->registerServiceConfig($config);
+        $serviceConfig = $this->serviceConfigRegister->retrieveServiceConfig('Service.Name');
+
+        $this->assertInstanceOf(ServiceConfig::class, $serviceConfig);
+        $this->assertEquals('Service.Name', $serviceConfig->getClass());
+        $this->assertEquals('serviceName', $serviceConfig->getAlias());
+        $this->assertEquals("SomeServiceSchema", $serviceConfig->getSchema());
+        $this->assertNull($serviceConfig->getCallbacks());
+    }
+
+    /**
+     * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::retrieveServiceConfig
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     */
+    public function testRetrieveServiceConfigByAlias()
+    {
+        $this->serviceConfigRegister->loadServiceConfigs();
+        $config = new ServiceConfig("Service.Name", "serviceNameAlias","SomeServiceSchema");
+        $this->serviceConfigRegister->registerServiceConfig($config);
+        $serviceConfig = $this->serviceConfigRegister->retrieveServiceConfig('serviceNameAlias');
+        $noneExistingConfig = $this->serviceConfigRegister->retrieveServiceConfig('noneExistingConfig');
+
+        $this->assertInstanceOf(ServiceConfig::class, $serviceConfig);
+        $this->assertEquals('Service.Name', $serviceConfig->getClass());
+        $this->assertEquals('serviceNameAlias', $serviceConfig->getAlias());
+        $this->assertEquals("SomeServiceSchema", $serviceConfig->getSchema());
+        $this->assertNull($serviceConfig->getCallbacks());
+        $this->assertNull($noneExistingConfig);
     }
 
     /**
