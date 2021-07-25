@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Config;
+namespace Tests\Config;
 
 use Micronative\ServiceSchema\Config\Exceptions\ConfigException;
 use Micronative\ServiceSchema\Config\ServiceConfig;
@@ -62,8 +62,8 @@ class ServiceConfigRegisterTest extends TestCase
         $this->serviceConfigRegister->loadServiceConfigs();
         $services = $this->serviceConfigRegister->getServiceConfigs();
         $this->assertTrue(is_array($services));
-        $this->assertTrue(isset($services["Micronative\ServiceSchema\Tests\Service\Samples\CreateContact"]));
-        $this->assertTrue(isset($services["Micronative\ServiceSchema\Tests\Service\Samples\UpdateContact"]));
+        $this->assertTrue(isset($services["Tests\Service\Samples\CreateContact"]));
+        $this->assertTrue(isset($services["Tests\Service\Samples\UpdateContact"]));
     }
 
     /**

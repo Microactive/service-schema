@@ -1,16 +1,16 @@
 - event: Users.Created
   services:
-    - Micronative\ServiceSchema\Tests\Service\Samples\CreateContact
-    - Micronative\ServiceSchema\Tests\Service\Samples\CreateTask
+    - Tests\Service\Samples\CreateContact
+    - Tests\Service\Samples\CreateTask
 - event: Users.Updated
   services:
-    - Micronative\ServiceSchema\Tests\Service\Samples\UpdateContact
+    - Tests\Service\Samples\UpdateContact
 - event: None.Existing.Service.Event
   services:
-    - Micronative\ServiceSchema\Tests\Service\Samples\NoneExistingService
+    - Tests\Service\Samples\NoneExistingService
 - event: Invalid.Service.Class.Event
   services:
-    - Micronative\ServiceSchema\Tests\Service\Samples\InvalidService
+    - Tests\Service\Samples\InvalidService
 - event: Empty.Service.Event
 - No.event: No.Event
 

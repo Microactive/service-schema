@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Event;
+namespace Tests\Event;
 
 use JsonSchema\Validator;
 use Micronative\ServiceSchema\Event\EventValidator;
@@ -20,7 +20,6 @@ class EventValidatorTest extends TestCase
         parent::setUp();
         $this->testDir = dirname(dirname(__FILE__));
         $this->validator = new EventValidator(new Validator());
-
     }
 
     /**
@@ -29,8 +28,9 @@ class EventValidatorTest extends TestCase
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-    public function testValidateWithEmptyEvent(){
-        $event = new SampleInvalidEvent();
+    public function testValidateWithEmptyEvent()
+    {
+        $event = new SampleInvalidEvent('SomeName');
         $this->expectException(EventValidatorException::class);
         $this->expectExceptionMessage(EventValidatorException::INVALID_JSON_STRING);
         $this->validator->validate($event);
@@ -39,8 +39,9 @@ class EventValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      */
-    public function testValidateWithEmptySchema(){
-        $event = new SampleEvent();
+    public function testValidateWithEmptySchema()
+    {
+        $event = new SampleEvent("SomeName");
         $this->expectException(EventValidatorException::class);
         $this->expectExceptionMessage(EventValidatorException::MISSING_EVENT_SCHEMA);
         $this->validator->validate($event);
@@ -49,20 +50,22 @@ class EventValidatorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      */
-    public function testValidateFailed(){
-        $event = new SampleEvent();
+    public function testValidateFailed()
+    {
+        $event = new SampleEvent("SomeName");
         $this->expectException(EventValidatorException::class);
-        $this->expectExceptionMessageMatches("%".EventValidatorException::INVALIDATED_EVENT_MESSAGE."%");
-        $this->validator->validate($event, $this->testDir.'/assets/schemas/UpdateContact.json');
+        $this->expectExceptionMessageMatches("%" . EventValidatorException::INVALIDATED_EVENT_MESSAGE . "%");
+        $this->validator->validate($event, $this->testDir . '/assets/schemas/UpdateContact.json');
     }
 
     /**
      * @covers \Micronative\ServiceSchema\Event\EventValidator::validate
      */
-    public function testValidateSuccessful(){
-        $event = new SampleEvent();
-        $event->setName('User.Created')->setPayload((object) ["name" => "Ken"]);
-        $validated = $this->validator->validate($event, $this->testDir.'/assets/schemas/SampleEvent.json');
+    public function testValidateSuccessful()
+    {
+        $event = new SampleEvent("SomeName");
+        $event->setName('User.Created')->setPayload(["name" => "Ken"]);
+        $validated = $this->validator->validate($event, $this->testDir . '/assets/schemas/SampleEvent.json');
         $this->assertTrue($validated);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Json;
+namespace Tests\Json;
 
 use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Json\JsonReader;

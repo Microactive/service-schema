@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Event;
+namespace Tests\Event;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 

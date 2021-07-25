@@ -1,16 +1,15 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Service;
+namespace Tests\Service;
 
-use Micronative\ServiceSchema\Tests\Service\Samples\CreateContact;
-use Micronative\ServiceSchema\Tests\Service\Samples\SampleContainer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-
+use Tests\Service\Samples\CreateContact;
+use Tests\Service\Samples\SampleContainer;
 
 class SampleServiceTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\ServiceSchema\Tests\Service\Samples\CreateContact */
+    /** @coversDefaultClass \Tests\Service\Samples\CreateContact */
     protected $sampleService;
 
     public function setUp(): void

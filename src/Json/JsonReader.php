@@ -28,7 +28,7 @@ class JsonReader implements JsonReaderInterface
     /**
      * @param string|null $json
      * @param bool $assoc
-     * @return array|mixed
+     * @return array|\stdClass
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public static function decode(string $json = null, bool $assoc = false)

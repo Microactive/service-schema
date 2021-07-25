@@ -1,13 +1,12 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Command;
+namespace Tests\Command;
 
 use Micronative\ServiceSchema\Command\RollbackCommand;
 use Micronative\ServiceSchema\Service\ServiceValidator;
-use Micronative\ServiceSchema\Tests\Service\Samples\CreateContact;
-use Micronative\ServiceSchema\Tests\Service\Samples\CreateTask;
-use Micronative\ServiceSchema\Tests\Service\Samples\SampleEvent;
 use PHPUnit\Framework\TestCase;
+use Tests\Service\Samples\CreateContact;
+use Tests\Service\Samples\SampleEvent;
 
 class RollbackCommandTest extends TestCase
 {
@@ -19,7 +18,7 @@ class RollbackCommandTest extends TestCase
         parent::setUp();
         $testDir = dirname(dirname(__FILE__));
         $validator = new ServiceValidator($testDir);
-        $event = new SampleEvent(['id' => 1, 'event' => 'Test.Event.Name', 'payload' => ['name' => 'Ken']]);
+        $event = new SampleEvent('Test.Event.Name', 1, ['name' => 'Ken']);
         $service = new CreateContact();
         $this->command = new RollbackCommand($validator, $service, $event);
     }

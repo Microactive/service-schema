@@ -23,15 +23,11 @@ class AbstractCommand
      */
     protected function validate()
     {
-        $json = JsonReader::decode($this->event->toJson());
-        if (isset($json->payload)) {
-            $this->event->setPayload($json->payload);
-        }
-
         if (empty($this->service->getJsonSchema())) {
             return true;
         }
 
+        $json = JsonReader::decode($this->event->toJson());
         $validator = $this->validator->validate($json, $this->service);
         if (!$validator->isValid()) {
             throw  new ServiceException(
@@ -41,6 +37,11 @@ class AbstractCommand
                     json_encode($validator->getErrors())
                 )
             );
+        }
+
+        /** override the payload after validating */
+        if (isset($json->payload)) {
+            $this->event->setPayload($json->payload);
         }
 
         return true;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Service;
+namespace Tests\Service;
 
 use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Service\ServiceValidator;
-use Micronative\ServiceSchema\Tests\Service\Samples\CreateContact;
+use Tests\Service\Samples\CreateContact;
 use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 
 class ServiceValidatorTest extends TestCase

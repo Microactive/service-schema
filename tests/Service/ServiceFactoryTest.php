@@ -1,15 +1,12 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Service;
+namespace Tests\Service;
 
 use Micronative\ServiceSchema\Config\ServiceConfig;
-use Micronative\ServiceSchema\Service\Exceptions\CommandException;
 use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceInterface;
-
-use function Webmozart\Assert\Tests\StaticAnalysis\null;
 
 class ServiceFactoryTest extends TestCase
 {
@@ -32,7 +29,7 @@ class ServiceFactoryTest extends TestCase
      */
     public function testCreateInvalidServiceClass()
     {
-        $serviceClass = "\Micronative\ServiceSchema\Tests\Service\Samples\InvalidServiceClass";
+        $serviceClass = "\Tests\Service\Samples\InvalidServiceClass";
         $schema = $this->testDir . "/assets/schemas/CreateContact.json";
         $serviceConfig = new ServiceConfig($serviceClass, null, $schema);
         $this->expectException(ServiceException::class);
@@ -45,7 +42,7 @@ class ServiceFactoryTest extends TestCase
      */
     public function testCreateInvalidService()
     {
-        $serviceClass = "\Micronative\ServiceSchema\Tests\Service\Samples\InvalidService";
+        $serviceClass = "\Tests\Service\Samples\InvalidService";
         $schema = $this->testDir . "/assets/schemas/CreateContact.json";
         $serviceConfig = new ServiceConfig($serviceClass, null, $schema);
         $service = $this->serviceFactory->createService($serviceConfig);
@@ -58,7 +55,7 @@ class ServiceFactoryTest extends TestCase
      */
     public function testCreateService()
     {
-        $serviceClass = "\Micronative\ServiceSchema\Tests\Service\Samples\CreateContact";
+        $serviceClass = "\Tests\Service\Samples\CreateContact";
         $schema = $this->testDir . "/assets/schemas/CreateContact.json";
         $serviceConfig = new ServiceConfig($serviceClass, null, $schema);
         $service = $this->serviceFactory->createService($serviceConfig);

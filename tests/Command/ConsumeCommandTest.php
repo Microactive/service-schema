@@ -1,15 +1,13 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Command;
+namespace Tests\Command;
 
 use Micronative\ServiceSchema\Command\ConsumeCommand;
-use Micronative\ServiceSchema\Event\Exception\EventValidatorException;
-use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
 use Micronative\ServiceSchema\Service\ServiceValidator;
-use Micronative\ServiceSchema\Tests\Service\Samples\CreateTask;
-use Micronative\ServiceSchema\Tests\Service\Samples\SampleEvent;
 use PHPUnit\Framework\TestCase;
+use Tests\Service\Samples\CreateTask;
+use Tests\Service\Samples\SampleEvent;
 
 class ConsumeCommandTest extends TestCase
 {
@@ -30,7 +28,7 @@ class ConsumeCommandTest extends TestCase
         parent::setUp();
         $testDir = dirname(dirname(__FILE__));
         $this->validator = new ServiceValidator($testDir);
-        $this->event = new SampleEvent(['id' => 1, 'event' => 'Test.Event.Name', 'payload' => ['name' => 'Ken']]);
+        $this->event = new SampleEvent('Test.Event.Name', 1, ['name' => 'Ken']);
         $this->service = new CreateTask();
     }
 

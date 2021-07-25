@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Service\Samples;
+namespace Tests\Service\Samples;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\AbstractService;
@@ -11,7 +11,7 @@ class CreateContact extends AbstractService implements ServiceInterface, Rollbac
 {
     public function consume(AbstractEvent $event = null)
     {
-        return new SampleEvent();
+        return new SampleEvent("SomeName");
     }
 
     public function rollback(AbstractEvent $event = null)

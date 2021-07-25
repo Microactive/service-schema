@@ -2,6 +2,8 @@
 
 namespace Micronative\ServiceSchema\Event;
 
+use Micronative\ServiceSchema\Json\JsonReader;
+
 abstract class AbstractEvent
 {
     /** @var string */
@@ -13,33 +15,37 @@ abstract class AbstractEvent
     /** @var array|null|\stdClass */
     protected $payload;
 
-
     /**
-     * Event constructor.
-     *
-     * @param array|null $data
+     * AbstractEvent constructor.
+     * @param string $name
+     * @param string|null $id
+     * @param array|\stdClass|null $payload
      */
-    public function __construct(array $data = null)
+    public function __construct(string $name, string $id = null,  $payload = null)
     {
-        $this->setData($data);
+        $this->setId($id);
+        $this->setName($name);
+        $this->setPayload($payload);
     }
 
     /**
-     * Set the event properties from an array data.
-     * This function is called in the construct to set event properties
-     *
-     * @param array|null $data
-     * @return \Micronative\ServiceSchema\Event\AbstractEvent
-     */
-    abstract public function setData(array $data = null);
-
-    /**
      * Get the json representing the event
+     * Override this function to return more properties if as necessary
+     * But id, name and payload are compulsory
      *
      * @return false|string
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-    abstract public function toJson();
+     public function toJson()
+     {
+         return JsonReader::encode(
+             [
+                 "id" => $this->id,
+                 "name" => $this->name,
+                 "payload" => $this->payload,
+             ]
+         );
+     }
 
 
     /**
@@ -95,7 +101,7 @@ abstract class AbstractEvent
      */
     public function setPayload($payload = null)
     {
-        $this->payload = $payload;
+        $this->payload = (object)$payload;
 
         return $this;
     }

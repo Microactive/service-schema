@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Event;
+namespace Tests\Event;
 
 use PHPUnit\Framework\TestCase;
 
@@ -26,30 +26,32 @@ class SampleEventTest extends TestCase
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setId
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setName
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setPayload
-     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::setData
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
     public function testToJson()
     {
-        $event = new SampleEvent();
+        $event = new SampleEvent("SomeName");
         $event->setId('1')
             ->setName("Test.Event.Name")
-            ->setPayload((object) ["name" => "Ken"]);
+            ->setPayload((object)["name" => "Ken"]);
         $this->assertSame($event->getId(), '1');
-        $this->assertEquals((object) ["name" => "Ken"], $event->getPayload());
+        $this->assertEquals((object)["name" => "Ken"], $event->getPayload());
 
         $json = $event->toJson();
         $this->assertTrue(is_string($json));
         $this->assertEquals('{"id":"1","name":"Test.Event.Name","payload":{"name":"Ken"}}', $json);
 
-        $event = new SampleEvent();
+        $event = new SampleEvent("SomeName");
         $event->setName("Users.afterSaveCommit.Create");
         $event->setPayload(["user" => ["data" => ["name" => "Ken"]], "account" => ["data" => ["name" => "Brighte"]]]);
         $json = $event->toJson();
         $this->assertTrue(is_string($json));
-        $this->assertEquals('{"id":null,"name":"Users.afterSaveCommit.Create","payload":{"user":{"data":{"name":"Ken"}},"account":{"data":{"name":"Brighte"}}}}', $json);
+        $this->assertEquals(
+            '{"id":null,"name":"Users.afterSaveCommit.Create","payload":{"user":{"data":{"name":"Ken"}},"account":{"data":{"name":"Brighte"}}}}',
+            $json
+        );
 
-        $event = new SampleEvent(['id' => '111', 'name' => 'Sample.Event']);
+        $event = new SampleEvent('Sample.Event', '111');
         $this->assertSame($event->getId(), '111');
         $this->assertSame($event->getName(), 'Sample.Event');
     }

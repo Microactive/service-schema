@@ -1,0 +1,7 @@
+- event: User.Created
+  services:
+    - Samples\TaskService\Services\CreateTaskForNewUser
+    - Samples\TaskService\Services\SendNotificationToNewUser
+- event: User.Updated
+  services:
+    - Samples\TaskService\Services\SendNotificationToUpdatedUser

@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Tests\Config;
+namespace Tests\Config;
 
 use Micronative\ServiceSchema\Config\EventConfig;
 use Micronative\ServiceSchema\Config\EventConfigRegister;
