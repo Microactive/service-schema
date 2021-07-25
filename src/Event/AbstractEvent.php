@@ -31,7 +31,7 @@ abstract class AbstractEvent
     /**
      * Get the json representing the event
      * Override this function to return more properties if as necessary
-     * But id, name and payload are compulsory
+     * But name is required
      *
      * @return false|string
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
@@ -40,8 +40,8 @@ abstract class AbstractEvent
      {
          return JsonReader::encode(
              [
-                 "id" => $this->id,
                  "name" => $this->name,
+                 "id" => $this->id,
                  "payload" => $this->payload,
              ]
          );

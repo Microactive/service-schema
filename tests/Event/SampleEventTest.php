@@ -39,7 +39,7 @@ class SampleEventTest extends TestCase
 
         $json = $event->toJson();
         $this->assertTrue(is_string($json));
-        $this->assertEquals('{"id":"1","name":"Test.Event.Name","payload":{"name":"Ken"}}', $json);
+        $this->assertEquals('{"name":"Test.Event.Name","id":"1","payload":{"name":"Ken"}}', $json);
 
         $event = new SampleEvent("SomeName");
         $event->setName("Users.afterSaveCommit.Create");
@@ -47,7 +47,7 @@ class SampleEventTest extends TestCase
         $json = $event->toJson();
         $this->assertTrue(is_string($json));
         $this->assertEquals(
-            '{"id":null,"name":"Users.afterSaveCommit.Create","payload":{"user":{"data":{"name":"Ken"}},"account":{"data":{"name":"Brighte"}}}}',
+            '{"name":"Users.afterSaveCommit.Create","id":null,"payload":{"user":{"data":{"name":"Ken"}},"account":{"data":{"name":"Brighte"}}}}',
             $json
         );
 
