@@ -35,4 +35,12 @@ class UserApp
             $this->publisher->publish($userEvent->toJson());
         }
     }
+
+    public function updateUser(User $user)
+    {
+        if ($this->userRepository->update($user)) {
+            $userEvent = new UserEvent(UserRepository::USER_UPDATED, Uuid::uuid4()->toString(), $user->toArray());
+            $this->publisher->publish($userEvent->toJson());
+        }
+    }
 }

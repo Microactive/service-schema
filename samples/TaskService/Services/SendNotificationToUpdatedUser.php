@@ -11,5 +11,7 @@ class SendNotificationToUpdatedUser extends AbstractService implements ServiceIn
     public function consume(AbstractEvent $event = null)
     {
         echo 'Notification has been sent to updated user.' . PHP_EOL;
+
+        return $event;
     }
 }

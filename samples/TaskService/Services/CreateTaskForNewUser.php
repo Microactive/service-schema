@@ -12,10 +12,14 @@ class CreateTaskForNewUser extends AbstractService implements ServiceInterface, 
     public function consume(AbstractEvent $event = null)
     {
         echo 'Task has been created for new user.' . PHP_EOL;
+
+        return $event;
     }
 
     public function rollback(AbstractEvent $event = null)
     {
         echo 'Task has been rollback.' . PHP_EOL;
+
+        return $event;
     }
 }

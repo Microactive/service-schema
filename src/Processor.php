@@ -239,7 +239,7 @@ class Processor implements ProcessorInterface
                 continue;
             }
 
-            if ($service = $this->serviceFactory->createService($serviceConfig, $this->container)) {
+            if (empty($service = $this->serviceFactory->createService($serviceConfig, $this->container))) {
                 continue;
             }
             $consumeCommand = new ServiceConsumeCommand($this->serviceValidator, $service, $event);

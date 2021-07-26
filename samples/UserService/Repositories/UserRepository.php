@@ -13,4 +13,9 @@ class UserRepository
     {
         return true;
     }
+
+    public function update(User $user)
+    {
+        return true;
+    }
 }

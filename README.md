@@ -37,7 +37,6 @@ composer require micronative/service-schema:3.0.0
 </pre>
 
 ## Sample code
-### configs 
 The codes under [samples](./samples) is a mock microservice architecture:
 - a [MessageBroker](./samples/MessageBroker)
 - two microservices: [UserService](./samples/UserService) and [TaskService](./samples/TaskService)

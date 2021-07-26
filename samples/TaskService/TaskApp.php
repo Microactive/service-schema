@@ -36,6 +36,7 @@ class TaskApp
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function listen()
     {
