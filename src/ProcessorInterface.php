@@ -27,9 +27,8 @@ interface ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param string|null $schemaFile
      * @param bool $applyDefaultValues
      * @return bool|void
      */
-    public function validate(AbstractEvent $event, string $schemaFile = null, bool $applyDefaultValues = false);
+    public function validate(AbstractEvent $event, bool $applyDefaultValues = false);
 }

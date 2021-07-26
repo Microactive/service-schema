@@ -3,7 +3,6 @@
 namespace Tests\Command;
 
 use Micronative\ServiceSchema\Command\EventValidateCommand;
-use Micronative\ServiceSchema\Command\ServiceConsumeCommand;
 use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
@@ -39,8 +38,13 @@ class EventValidateCommandTest extends TestCase
      */
     public function testExecute()
     {
-        $this->service->setJsonSchema("/assets/schemas/CreateTask.json");
-        $this->command = new EventValidateCommand($this->validator, $this->event, "/assets/schemas/CreateTask.json", true);
+        $this->service->setJsonSchema("/assets/schemas/services/CreateTask.json");
+        $this->event->setSchema("/assets/schemas/services/CreateTask.json");
+        $this->command = new EventValidateCommand(
+            $this->validator,
+            $this->event,
+            true
+        );
         $result = $this->command->execute();
         $this->assertTrue($result);
     }
@@ -51,8 +55,9 @@ class EventValidateCommandTest extends TestCase
      */
     public function testExecuteThrowsException()
     {
-        $this->service->setJsonSchema("/assets/schemas/CreateContact.json");
-        $this->command = new EventValidateCommand($this->validator, $this->event, "/assets/schemas/CreateContact.json", true);
+        $this->service->setJsonSchema("/assets/schemas/services/CreateContact.json");
+        $this->event->setSchema("/assets/schemas/services/CreateContact.json");
+        $this->command = new EventValidateCommand($this->validator, $this->event, true);
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
         $this->command->execute();

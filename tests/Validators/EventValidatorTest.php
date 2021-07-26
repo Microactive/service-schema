@@ -7,8 +7,8 @@ use Micronative\ServiceSchema\Json\Exceptions\JsonException;
 use Micronative\ServiceSchema\Validators\EventValidator;
 use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 use PHPUnit\Framework\TestCase;
-use Tests\Event\SampleInvalidEvent;
 use Tests\Event\SampleEvent;
+use Tests\Event\SampleInvalidEvent;
 
 class EventValidatorTest extends TestCase
 {
@@ -32,6 +32,7 @@ class EventValidatorTest extends TestCase
     public function testValidateWithInvalidJsonEvent()
     {
         $event = new SampleInvalidEvent('SomeName');
+        $event->setSchema("/assets/schemas/events/User.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessage(ValidatorException::INVALID_JSON);
         $this->validator->validateEvent($event);
@@ -43,8 +44,9 @@ class EventValidatorTest extends TestCase
     public function testValidateWithInvalidSchema()
     {
         $event = new SampleEvent("SomeName");
-        $this->expectException(JsonException::class);
-        $this->expectExceptionMessage(JsonException::INVALID_JSON_FILE);
+        $event->setSchema("/assets/schemas/events/InvalidSchema.json");
+        $this->expectException(ValidatorException::class);
+        $this->expectExceptionMessage(ValidatorException::INVALID_SCHEMA);
         $this->validator->validateEvent($event);
     }
 
@@ -54,9 +56,10 @@ class EventValidatorTest extends TestCase
     public function testValidateFailed()
     {
         $event = new SampleEvent("SomeName");
+        $event->setSchema("/assets/schemas/events/Task.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches("%" . ValidatorException::INVALIDATED_EVENT . "%");
-        $this->validator->validateEvent($event, '/assets/schemas/UpdateContact.json');
+        $this->validator->validateEvent($event);
     }
 
     /**
@@ -65,9 +68,10 @@ class EventValidatorTest extends TestCase
     public function testValidateWithNoneExistingSchema()
     {
         $event = new SampleEvent("SomeName");
-        $this->expectException(ValidatorException::class);
-        $this->expectExceptionMessageMatches("%" . ValidatorException::INVALID_SCHEMA . "%");
-        $this->validator->validateEvent($event, '/assets/schemas/InvalidJsonSchema.json');
+        $event->setSchema("/assets/schemas/events/NoneExistingSchmea.json");
+        $this->expectException(JsonException::class);
+        $this->expectExceptionMessageMatches("%" . JsonException::INVALID_JSON_FILE . "%");
+        $this->validator->validateEvent($event);
     }
 
     /**
@@ -77,7 +81,8 @@ class EventValidatorTest extends TestCase
     {
         $event = new SampleEvent("SomeName");
         $event->setName('User.Created')->setPayload(["name" => "Ken"]);
-        $validated = $this->validator->validateEvent($event,  '/assets/schemas/SampleEvent.json', true);
+        $event->setSchema("/assets/schemas/events/Task.json");
+        $validated = $this->validator->validateEvent($event, true);
         $this->assertTrue($validated);
     }
 }

@@ -31,7 +31,7 @@ class SchemaExporterTest extends TestCase
         $this->testDir = dirname(dirname(__FILE__));
         $this->processor = new Processor([$this->testDir . "/assets/configs/events.json"], [$this->testDir . "/assets/configs/services.json"], $this->testDir);
         $this->message = JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json");
-        $this->schema = JsonReader::read($this->testDir . "/assets/schemas/CreateContact.json");
+        $this->schema = JsonReader::read($this->testDir . "/assets/schemas/services/CreateContact.json");
 
     }
 

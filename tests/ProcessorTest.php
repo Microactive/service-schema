@@ -215,10 +215,10 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function testRollbackWithNoneExistingServiceEvent()
     {
@@ -230,10 +230,10 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function testRollbackWithEmptyServiceEvent()
     {
@@ -245,10 +245,10 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @covers \Micronative\ServiceSchema\Processor::rollback
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function testRollbackWithNoneRegisteredEvent()
     {
@@ -257,6 +257,20 @@ class ProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
         $this->processor->rollback($event);
+    }
+
+    /**
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     */
+    public function testValidate()
+    {
+        $data = JsonReader::decode(
+            JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json")
+        );
+        $event = new SampleEvent($data->name, $data->id, (array)$data->payload);
+        $result = $this->processor->validate($event, "/assets/schemas/events/Task.json");
+        $this->assertTrue(is_bool($result));
     }
 
     public function testSettersAndGetters()

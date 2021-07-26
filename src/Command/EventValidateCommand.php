@@ -23,18 +23,15 @@ class EventValidateCommand implements CommandInterface
      * EventValidateCommand constructor.
      * @param \Micronative\ServiceSchema\Validators\EventValidator $validator
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param string|null $jsonSchema
      * @param bool $applyDefaultValues
      */
     public function __construct(
         EventValidator $validator,
         AbstractEvent $event,
-        string $jsonSchema = null,
         bool $applyDefaultValues = false
     ) {
         $this->eventValidator = $validator;
         $this->event = $event;
-        $this->jsonSchema = $jsonSchema;
         $this->applyDefaultValues = $applyDefaultValues;
     }
 
@@ -45,6 +42,6 @@ class EventValidateCommand implements CommandInterface
      */
     public function execute()
     {
-        return $this->eventValidator->validateEvent($this->event, $this->jsonSchema, $this->applyDefaultValues);
+        return $this->eventValidator->validateEvent($this->event, $this->applyDefaultValues);
     }
 }

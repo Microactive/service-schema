@@ -15,17 +15,22 @@ abstract class AbstractEvent
     /** @var array|null */
     protected $payload;
 
+    /** @var string|null */
+    protected $schema;
+
     /**
      * AbstractEvent constructor.
      * @param string $name
      * @param string|null $id
      * @param array|null $payload
+     * @param string|null $schema
      */
-    public function __construct(string $name, string $id = null, array $payload = null)
+    public function __construct(string $name, string $id = null, array $payload = null, string $schema = null)
     {
-        $this->setId($id);
-        $this->setName($name);
-        $this->setPayload($payload);
+        $this->name = $name;
+        $this->id = $id;
+        $this->payload = $payload;
+        $this->schema = $schema;
     }
 
     /**
@@ -102,6 +107,25 @@ abstract class AbstractEvent
     public function setPayload($payload = null)
     {
         $this->payload = $payload;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSchema(): ?string
+    {
+        return $this->schema;
+    }
+
+    /**
+     * @param string|null $schema
+     * @return \Micronative\ServiceSchema\Event\AbstractEvent
+     */
+    public function setSchema(?string $schema): AbstractEvent
+    {
+        $this->schema = $schema;
 
         return $this;
     }

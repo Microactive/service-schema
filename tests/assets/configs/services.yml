@@ -1,16 +1,16 @@
 - service: Tests\Service\Samples\CreateContact
-  schema: /assets/schemas/CreateContact.json
+  schema: /assets/schemas/services/CreateContact.json
   callbacks:
     - Tests\Service\Samples\PushMessageToSqs
     - pushMessageToLog
 - service: Tests\Service\Samples\UpdateContact
-  schema: /assets/schemas/UpdateContact.json
+  schema: /assets/schemas/services/UpdateContact.json
   callbacks:
     - pushMessageToSqs
 - service: Tests\Service\Samples\CreateTask
-  schema: /assets/schemas/CreateTask.json
+  schema: /assets/schemas/services/CreateTask.json
 - service: Tests\Service\Samples\InvalidService
-  schema: /assets/schemas/CreateTask.json
+  schema: /assets/schemas/services/CreateTask.json
 - service: Tests\Service\Samples\PushMessageToSqs
   alias: pushMessageToSqs
 - service: Tests\Service\Samples\PushMessageToLog

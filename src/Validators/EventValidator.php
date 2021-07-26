@@ -29,21 +29,22 @@ class EventValidator
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param string|null $jsonSchema
      * @param bool $applyDefaultValues
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
-    public function validateEvent(AbstractEvent $event, string $jsonSchema = null, bool $applyDefaultValues = false)
+    public function validateEvent(AbstractEvent $event, bool $applyDefaultValues = false)
     {
-        $jsonObject = JsonReader::decode($event->toJson());
-        if (empty($jsonObject)) {
+        if (empty($jsonSchema = $event->getSchema())) {
+            return true;
+        }
+
+        if (empty($jsonObject = JsonReader::decode($event->toJson()))) {
             throw new ValidatorException(ValidatorException::INVALID_JSON);
         }
 
-        $schema = JsonReader::decode(JsonReader::read($this->schemaDir . $jsonSchema));
-        if (empty($schema)) {
+        if (empty($schema = JsonReader::decode(JsonReader::read($this->schemaDir . $jsonSchema)))) {
             throw new ValidatorException(ValidatorException::INVALID_SCHEMA);
         }
 

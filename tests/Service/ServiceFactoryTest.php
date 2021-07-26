@@ -30,7 +30,7 @@ class ServiceFactoryTest extends TestCase
     public function testCreateInvalidServiceClass()
     {
         $serviceClass = "\Tests\Service\Samples\InvalidServiceClass";
-        $schema = $this->testDir . "/assets/schemas/CreateContact.json";
+        $schema = $this->testDir . "/assets/schemas/services/CreateContact.json";
         $serviceConfig = new ServiceConfig($serviceClass, null, $schema);
         $this->expectException(ServiceException::class);
         $this->serviceFactory->createService($serviceConfig);
@@ -43,7 +43,7 @@ class ServiceFactoryTest extends TestCase
     public function testCreateInvalidService()
     {
         $serviceClass = "\Tests\Service\Samples\InvalidService";
-        $schema = $this->testDir . "/assets/schemas/CreateContact.json";
+        $schema = $this->testDir . "/assets/schemas/services/CreateContact.json";
         $serviceConfig = new ServiceConfig($serviceClass, null, $schema);
         $service = $this->serviceFactory->createService($serviceConfig);
         $this->assertFalse($service);
@@ -56,10 +56,10 @@ class ServiceFactoryTest extends TestCase
     public function testCreateService()
     {
         $serviceClass = "\Tests\Service\Samples\CreateContact";
-        $schema = $this->testDir . "/assets/schemas/CreateContact.json";
+        $schema = $this->testDir . "/assets/schemas/services/CreateContact.json";
         $serviceConfig = new ServiceConfig($serviceClass, null, $schema);
         $service = $this->serviceFactory->createService($serviceConfig);
         $this->assertTrue($service instanceof ServiceInterface);
-        $this->assertEquals($this->testDir . "/assets/schemas/CreateContact.json", $service->getJsonSchema());
+        $this->assertEquals($this->testDir . "/assets/schemas/services/CreateContact.json", $service->getJsonSchema());
     }
 }

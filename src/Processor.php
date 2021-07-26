@@ -127,15 +127,14 @@ class Processor implements ProcessorInterface
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param string|null $schemaFile
      * @param bool $applyDefaultValues
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent|void
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
-    public function validate(AbstractEvent $event, string $schemaFile = null, bool $applyDefaultValues = false)
+    public function validate(AbstractEvent $event, bool $applyDefaultValues = false)
     {
-        $validateCommand = new EventValidateCommand($this->eventValidator, $event, $schemaFile, $applyDefaultValues);
+        $validateCommand = new EventValidateCommand($this->eventValidator, $event, $applyDefaultValues);
 
         return $validateCommand->execute();
     }

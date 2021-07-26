@@ -1,13 +1,13 @@
 - service: Samples\TaskService\Services\CreateTaskForNewUser
-  schema: /assets/schemas/CreateTask.json
+  schema: /assets/schemas/services/CreateTask.json
   callbacks:
     - Samples\TaskService\Services\LogTask
 - service: Samples\TaskService\Services\SendNotificationToNewUser
-  schema: /assets/schemas/SendNotifcation.json
+  schema: /assets/schemas/services/SendNotifcation.json
   callbacks:
     - LogNotification
 - service: Samples\TaskService\Services\SendNotificationToUpdatedUser
-  schema: /assets/schemas/SendNotifcation.json
+  schema: /assets/schemas/services/SendNotifcation.json
   callbacks:
     - LogNotification
 - service: Samples\TaskService\Services\LogTask
