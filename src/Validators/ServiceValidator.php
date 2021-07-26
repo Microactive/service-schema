@@ -20,7 +20,7 @@ class ServiceValidator extends EventValidator
         if (empty($jsonSchema = $service->getJsonSchema())) {
             return true;
         }
-        $event->setSchema($service->getJsonSchema());
+        $event->setSchema($jsonSchema);
 
         return $this->validateEvent($event, $applyDefaultValues);
     }
