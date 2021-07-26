@@ -51,7 +51,7 @@ class UserApp
              * These event event schemas are the contracts between publisher and consumer
              * These event event schemas might be published as part of the open api specification
              */
-            if ($this->processor->validate($userEvent)) {
+            if ($this->processor->validate($userEvent, true)) {
                 $this->publisher->publish($userEvent->toJson());
             }
         }
@@ -71,8 +71,8 @@ class UserApp
              * These event event schemas are the contracts between publisher and consumer
              * These event event schemas might be published as part of the open api specification
              */
-            $userEvent->setSchema('/assets/schemas/events/User.json');
-            if ($this->processor->validate($userEvent)) {
+            $userEvent->setJsonSchema('/assets/schemas/events/User.json');
+            if ($this->processor->validate($userEvent, true)) {
                 $this->publisher->publish($userEvent->toJson());
             }
         }

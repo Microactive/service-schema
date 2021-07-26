@@ -10,18 +10,18 @@ class ServiceValidator extends EventValidator
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @param \Micronative\ServiceSchema\Service\ServiceInterface $service
-     * @param bool $applyDefaultValues
+     * @param bool $applyPayloadDefaultValues
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
-    public function validateService(AbstractEvent $event, ServiceInterface $service, bool $applyDefaultValues = false)
+    public function validateService(AbstractEvent $event, ServiceInterface $service, bool $applyPayloadDefaultValues = false)
     {
         if (empty($jsonSchema = $service->getJsonSchema())) {
             return true;
         }
-        $event->setSchema($jsonSchema);
+        $event->setJsonSchema($jsonSchema);
 
-        return $this->validateEvent($event, $applyDefaultValues);
+        return $this->validateEvent($event, $applyPayloadDefaultValues);
     }
 }

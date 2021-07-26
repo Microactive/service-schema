@@ -15,23 +15,25 @@ abstract class AbstractEvent
     /** @var array|null */
     protected $payload;
 
-    /** @var string|null */
-    protected $schema;
+    /**
+     * @var string relative path (from Processor::schemaDir) to json schema file
+     * @@see \Micronative\ServiceSchema\Processor::schemaDir
+     */
+    protected $jsonSchema;
 
     /**
      * AbstractEvent constructor.
      * @param string $name
      * @param string|null $id
      * @param array|null $payload
-     * @param string|null $schema relative path (from Processor::schemaDir) to json schema file
-     * @see \Micronative\ServiceSchema\Processor::schemaDir
+     * @param string|null $jsonSchema
      */
-    public function __construct(string $name, string $id = null, array $payload = null, string $schema = null)
+    public function __construct(string $name, string $id = null, array $payload = null, string $jsonSchema = null)
     {
         $this->name = $name;
         $this->id = $id;
         $this->payload = $payload;
-        $this->schema = $schema;
+        $this->jsonSchema = $jsonSchema;
     }
 
     /**
@@ -115,18 +117,18 @@ abstract class AbstractEvent
     /**
      * @return string|null
      */
-    public function getSchema(): ?string
+    public function getJsonSchema(): ?string
     {
-        return $this->schema;
+        return $this->jsonSchema;
     }
 
     /**
-     * @param string|null $schema
+     * @param string|null $jsonSchema
      * @return \Micronative\ServiceSchema\Event\AbstractEvent
      */
-    public function setSchema(?string $schema): AbstractEvent
+    public function setJsonSchema(?string $jsonSchema): AbstractEvent
     {
-        $this->schema = $schema;
+        $this->jsonSchema = $jsonSchema;
 
         return $this;
     }

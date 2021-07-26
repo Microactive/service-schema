@@ -37,7 +37,7 @@ class ServiceConsumeCommand implements CommandInterface
      */
     public function execute()
     {
-        $this->serviceValidator->validateService($this->event, $this->service, true);
+        $this->serviceValidator->validateService($this->event, $this->service, false);
         return $this->service->consume($this->event);
     }
 }

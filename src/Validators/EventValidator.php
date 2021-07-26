@@ -29,14 +29,14 @@ class EventValidator
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param bool $applyDefaultValues
+     * @param bool $applyPayloadDefaultValues
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
-    public function validateEvent(AbstractEvent $event, bool $applyDefaultValues = false)
+    public function validateEvent(AbstractEvent $event, bool $applyPayloadDefaultValues = false)
     {
-        if (empty($jsonSchema = $event->getSchema())) {
+        if (empty($jsonSchema = $event->getJsonSchema())) {
             return true;
         }
 
@@ -48,7 +48,7 @@ class EventValidator
             throw new ValidatorException(ValidatorException::INVALID_SCHEMA);
         }
 
-        $checkMode = $applyDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
+        $checkMode = $applyPayloadDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
         $this->validator->validate($jsonObject, $schema, $checkMode);
 
         if (!$this->validator->isValid()) {
@@ -57,7 +57,7 @@ class EventValidator
             );
         }
 
-        if ($applyDefaultValues === true) {
+        if ($applyPayloadDefaultValues === true) {
             if (isset($jsonObject->payload)) {
                 $event->setPayload($jsonObject->payload);
             }
