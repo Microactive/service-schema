@@ -10,6 +10,6 @@ class LogTask extends AbstractService implements ServiceInterface
 {
     public function consume(AbstractEvent $event = null)
     {
-        return 'Task has been logged.';
+        echo 'Task has been logged.' . PHP_EOL;
     }
 }

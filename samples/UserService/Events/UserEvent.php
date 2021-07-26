@@ -9,7 +9,7 @@ class UserEvent extends AbstractEvent
     /** @var \DateTime */
     private $createdAt;
 
-    public function __construct(string $name, string $id = null, $payload = null)
+    public function __construct(string $name, string $id = null, array $payload = null)
     {
         parent::__construct($name, $id, $payload);
         $this->createdAt = new \DateTime();

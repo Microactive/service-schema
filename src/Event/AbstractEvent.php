@@ -7,21 +7,21 @@ use Micronative\ServiceSchema\Json\JsonReader;
 abstract class AbstractEvent
 {
     /** @var string */
-    protected $id;
-
-    /** @var string */
     protected $name;
 
-    /** @var array|null|\stdClass */
+    /** @var string|null */
+    protected $id;
+
+    /** @var array|null */
     protected $payload;
 
     /**
      * AbstractEvent constructor.
      * @param string $name
      * @param string|null $id
-     * @param array|\stdClass|null $payload
+     * @param array|null $payload
      */
-    public function __construct(string $name, string $id = null,  $payload = null)
+    public function __construct(string $name, string $id = null, array $payload = null)
     {
         $this->setId($id);
         $this->setName($name);
@@ -88,7 +88,7 @@ abstract class AbstractEvent
 
 
     /**
-     * @return array|\stdClass|null
+     * @return array|null
      */
     public function getPayload()
     {
@@ -96,12 +96,12 @@ abstract class AbstractEvent
     }
 
     /**
-     * @param array|\stdClass|null $payload
+     * @param array|null $payload
      * @return \Micronative\ServiceSchema\Event\AbstractEvent
      */
     public function setPayload($payload = null)
     {
-        $this->payload = (object)$payload;
+        $this->payload = $payload;
 
         return $this;
     }

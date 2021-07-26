@@ -1,14 +1,18 @@
 <?php
 require_once('./vendor/autoload.php');
 
-use Samples\MockBroker\MessageBroker;
+use Samples\MessageBroker\MockBroker;
 use Samples\TaskService\TaskApp;
 use Samples\UserService\UserApp;
 
-$broker = new MessageBroker();
+try {
+    $broker = new MockBroker();
 
-$userApp = new UserApp($broker);
-$userApp->createUser('Ken', 'ken.ngo@gmail.com');
+    $userApp = new UserApp($broker);
+    $userApp->createUser('Ken', 'ken.ngo@gmail.com');
 
-$taskApp = new TaskApp($broker);
-$taskApp->listen();
+    $taskApp = new TaskApp($broker);
+    $taskApp->listen();
+}catch (Exception $e){
+    echo $e->getMessage();
+}

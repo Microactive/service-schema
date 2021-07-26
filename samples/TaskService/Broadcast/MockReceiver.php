@@ -2,14 +2,14 @@
 
 namespace Samples\TaskService\Broadcast;
 
-use Samples\MockBroker\MessageBroker;
+use Samples\MessageBroker\MockBroker;
 
-class Receiver
+class MockReceiver
 {
-    /** @var \Samples\MockBroker\MessageBroker */
+    /** @var \Samples\MessageBroker\MockBroker */
     private $broker;
 
-    public function __construct(MessageBroker $broker = null)
+    public function __construct(MockBroker $broker = null)
     {
         $this->broker = $broker;
     }

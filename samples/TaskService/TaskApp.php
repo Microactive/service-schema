@@ -3,13 +3,13 @@
 namespace Samples\TaskService;
 
 use Micronative\ServiceSchema\Processor;
-use Samples\MockBroker\MessageBroker;
-use Samples\TaskService\Broadcast\Receiver;
+use Samples\MessageBroker\MockBroker;
+use Samples\TaskService\Broadcast\MockReceiver;
 use Samples\TaskService\Events\TaskEvent;
 
 class TaskApp
 {
-    /** @var \Samples\TaskService\Broadcast\Receiver */
+    /** @var \Samples\TaskService\Broadcast\MockReceiver */
     private $receiver;
 
     /** @var \Micronative\ServiceSchema\Processor */
@@ -17,13 +17,13 @@ class TaskApp
 
     /**
      * App constructor.
-     * @param \Samples\MockBroker\MessageBroker|null $broker
+     * @param \Samples\MessageBroker\MockBroker|null $broker
      * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-    public function __construct(MessageBroker $broker = null)
+    public function __construct(MockBroker $broker = null)
     {
-        $this->receiver = new Receiver($broker);
+        $this->receiver = new MockReceiver($broker);
         $assetDir = dirname(__FILE__);
         $this->processor = new Processor(
             [$assetDir . "/assets/configs/events.yml"],

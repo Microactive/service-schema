@@ -2,7 +2,7 @@
 
 namespace Samples\UserService\Entities;
 
-class User implements \JsonSerializable
+class User
 {
     /** @var string */
     private $name;
@@ -17,11 +17,11 @@ class User implements \JsonSerializable
     }
 
     /**
-     * @return false|mixed|string
+     * @return array
      */
-    public function jsonSerialize()
+    public function toArray()
     {
-        return json_encode(['name' => $this->name, 'email' => $this->email]);
+        return ['name' => $this->name, 'email' => $this->email];
     }
 
     /**

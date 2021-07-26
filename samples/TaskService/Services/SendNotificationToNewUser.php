@@ -1,6 +1,6 @@
 <?php
 
-namespace Samples\Services;
+namespace Samples\TaskService\Services;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\AbstractService;
@@ -10,6 +10,6 @@ class SendNotificationToNewUser extends AbstractService implements ServiceInterf
 {
     public function consume(AbstractEvent $event = null)
     {
-        return 'Notification has been sent to new user.';
+        echo 'Notification has been sent to new user.' . PHP_EOL;
     }
 }

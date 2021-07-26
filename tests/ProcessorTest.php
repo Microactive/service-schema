@@ -49,7 +49,7 @@ class ProcessorTest extends TestCase
     public function testProcess()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json"));
-        $event = new SampleEvent($data->name, $data->id, $data->payload);
+        $event = new SampleEvent($data->name, $data->id, (array)$data->payload);
         $result = $this->processor->process($event);
         $this->assertTrue(is_bool($result));
     }
@@ -65,7 +65,7 @@ class ProcessorTest extends TestCase
     public function testProcessWithReturn()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json"));
-        $event = new SampleEvent($data->name, $data->id, $data->payload);
+        $event = new SampleEvent($data->name, $data->id, (array)$data->payload);
         $result = $this->processor->process($event, null, true);
         $this->assertInstanceOf(AbstractEvent::class, $result);
     }
@@ -81,7 +81,7 @@ class ProcessorTest extends TestCase
     public function testProcessFailed()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.Failed.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->expectException(ServiceException::class);
         $this->processor->process($event);
     }
@@ -97,7 +97,7 @@ class ProcessorTest extends TestCase
     public function testProcessWithFilteredEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json"));
-        $event = new SampleEvent($data->name, $data->id, $data->payload);
+        $event = new SampleEvent($data->name, $data->id, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessageMatches('%'.ProcessorException::FILTERED_EVENT_ONLY.'%');
         $this->processor->process($event, ['EventOne', 'EventTwo']);
@@ -114,7 +114,7 @@ class ProcessorTest extends TestCase
     public function testProcessWithNoneRegisteredEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
         $this->processor->process($event);
@@ -131,7 +131,7 @@ class ProcessorTest extends TestCase
     public function testProcessWithEmptyServiceEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
         $this->processor->process($event);
@@ -148,7 +148,7 @@ class ProcessorTest extends TestCase
     public function testProcessWithNoneExistingServiceEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Existing.Service.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->processor->process($event));
     }
 
@@ -163,7 +163,7 @@ class ProcessorTest extends TestCase
     public function testProcessWithInvalidServiceClass()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->processor->process($event));
     }
 
@@ -177,7 +177,7 @@ class ProcessorTest extends TestCase
     public function testRollback()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $result = $this->processor->rollback($event);
         $this->assertTrue($result);
     }
@@ -192,7 +192,7 @@ class ProcessorTest extends TestCase
     public function testRollbackWithInvalidValidation()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Users.afterSaveCommit.Create.Failed.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->expectException(ServiceException::class);
         $this->processor->rollback($event);
     }
@@ -206,7 +206,7 @@ class ProcessorTest extends TestCase
     public function testRollbackWithInvalidServiceClass()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Invalid.Service.Class.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->processor->rollback($event));
     }
 
@@ -219,7 +219,7 @@ class ProcessorTest extends TestCase
     public function testRollbackWithNoneExistingServiceEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Existing.Service.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->assertTrue($this->processor->rollback($event));
     }
 
@@ -232,7 +232,7 @@ class ProcessorTest extends TestCase
     public function testRollbackWithEmptyServiceEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/Empty.Service.Event.json"));
-        $event = new SampleEvent($data->name, $data->id ?? null, $data->payload);
+        $event = new SampleEvent($data->name, $data->id ?? null, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(ProcessorException::NO_REGISTER_SERVICES . $event->getName());
         $this->processor->rollback($event);
@@ -247,7 +247,7 @@ class ProcessorTest extends TestCase
     public function testRollbackWithNoneRegisteredEvent()
     {
         $data = JsonReader::decode(JsonReader::read($this->testDir . "/assets/events/None.Registered.Event.json"));
-        $event = new SampleEvent($data->name, $data->id, $data->payload);
+        $event = new SampleEvent($data->name, $data->id, (array)$data->payload);
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(ProcessorException::NO_REGISTER_EVENTS . $event->getName());
         $this->processor->rollback($event);

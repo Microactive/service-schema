@@ -10,6 +10,6 @@ class LogNotification extends AbstractService implements ServiceInterface
 {
     public function consume(AbstractEvent $event = null)
     {
-        return 'Notification has been logged.';
+        echo 'Notification has been logged.' . PHP_EOL;
     }
 }

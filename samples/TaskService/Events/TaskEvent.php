@@ -3,7 +3,6 @@
 namespace Samples\TaskService\Events;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
-use Micronative\ServiceSchema\Json\JsonReader;
 
 class TaskEvent extends AbstractEvent
 {
@@ -17,18 +16,15 @@ class TaskEvent extends AbstractEvent
     }
 
     /**
-     * @return false|string
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @return array
      */
-    public function toJson()
+    public function toArray()
     {
-        return JsonReader::encode(
-            [
-                "id" => $this->id,
-                "name" => $this->name,
-                "payload" => $this->payload,
-                "received" => date('Y-m-d:H:i:s', time())
-            ]
-        );
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "payload" => $this->payload,
+            "received" => date('Y-m-d:H:i:s', time())
+        ];
     }
 }

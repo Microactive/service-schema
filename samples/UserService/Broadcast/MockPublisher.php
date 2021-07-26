@@ -2,14 +2,14 @@
 
 namespace Samples\UserService\Broadcast;
 
-use Samples\MockBroker\MessageBroker;
+use Samples\MessageBroker\MockBroker;
 
-class Publisher
+class MockPublisher
 {
-    /** @var \Samples\MockBroker\MessageBroker */
+    /** @var \Samples\MessageBroker\MockBroker */
     private $broker;
 
-    public function __construct(MessageBroker $broker = null)
+    public function __construct(MockBroker $broker = null)
     {
         $this->broker = $broker;
     }

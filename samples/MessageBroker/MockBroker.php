@@ -1,8 +1,8 @@
 <?php
 
-namespace Samples\MockBroker;
+namespace Samples\MessageBroker;
 
-class MessageBroker
+class MockBroker
 {
     /** @var string[] */
     private $messages = [];
@@ -33,9 +33,9 @@ class MessageBroker
 
     /**
      * @param string[] $messages
-     * @return \Samples\MockBroker\MessageBroker
+     * @return \Samples\MessageBroker\MockBroker
      */
-    public function setMessages(array $messages): MessageBroker
+    public function setMessages(array $messages): MockBroker
     {
         $this->messages = $messages;
 

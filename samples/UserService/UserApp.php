@@ -3,15 +3,15 @@
 namespace Samples\UserService;
 
 use Ramsey\Uuid\Uuid;
-use Samples\MockBroker\MessageBroker;
-use Samples\UserService\Broadcast\Publisher;
+use Samples\MessageBroker\MockBroker;
+use Samples\UserService\Broadcast\MockPublisher;
 use Samples\UserService\Entities\User;
 use Samples\UserService\Events\UserEvent;
 use Samples\UserService\Repositories\UserRepository;
 
 class UserApp
 {
-    /** @var \Samples\UserService\Broadcast\Publisher */
+    /** @var \Samples\UserService\Broadcast\MockPublisher */
     private $publisher;
 
     /** @var \Samples\UserService\Repositories\UserRepository */
@@ -19,11 +19,11 @@ class UserApp
 
     /**
      * App constructor.
-     * @param \Samples\MockBroker\MessageBroker|null $broker
+     * @param \Samples\MessageBroker\MockBroker|null $broker
      */
-    public function __construct(MessageBroker $broker = null)
+    public function __construct(MockBroker $broker = null)
     {
-        $this->publisher = new Publisher($broker);
+        $this->publisher = new MockPublisher($broker);
         $this->userRepository = new UserRepository();
     }
 
@@ -31,7 +31,7 @@ class UserApp
     {
         $user = new User($name, $email);
         if ($this->userRepository->save($user)) {
-            $userEvent = new UserEvent(UserRepository::USER_CREATED, Uuid::uuid4()->toString(), $user->jsonSerialize());
+            $userEvent = new UserEvent(UserRepository::USER_CREATED, Uuid::uuid4()->toString(), $user->toArray());
             $this->publisher->publish($userEvent->toJson());
         }
     }
