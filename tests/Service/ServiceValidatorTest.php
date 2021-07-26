@@ -65,7 +65,7 @@ class ServiceValidatorTest extends TestCase
         $jsonObject = JsonReader::decode(JsonReader::read($file));
         $service = new CreateContact();
         $service->setJsonSchema("/assets/schemas/CreateContact.json");
-        $validator = $this->serviceValidator->validate($jsonObject, $service);
+        $validator = $this->serviceValidator->validate($jsonObject, $service, true);
         $this->assertTrue($validator->isValid());
 
         $validator = $this->serviceValidator->getValidator();

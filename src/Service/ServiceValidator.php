@@ -29,12 +29,16 @@ class ServiceValidator
     /**
      * @param \stdClass|null $jsonObject
      * @param \Micronative\ServiceSchema\Service\ServiceInterface|null $service
+     * @param bool $applyDefaultValues
      * @return \JsonSchema\Validator
      * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-    public function validate(\stdClass &$jsonObject = null, ServiceInterface $service = null)
-    {
+    public function validate(
+        \stdClass &$jsonObject = null,
+        ServiceInterface $service = null,
+        bool $applyDefaultValues = false
+    ) {
         if (empty($jsonObject)) {
             throw new ServiceException(ServiceException::MISSING_JSON_STRING);
         }
@@ -44,7 +48,8 @@ class ServiceValidator
         }
 
         $schema = JsonReader::decode(JsonReader::read($this->schemaDir . $service->getJsonSchema()));
-        $this->validator->validate($jsonObject, $schema, Constraint::CHECK_MODE_APPLY_DEFAULTS);
+        $checkMode = $applyDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
+        $this->validator->validate($jsonObject, $schema, $checkMode);
 
         return $this->validator;
     }

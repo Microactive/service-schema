@@ -24,11 +24,12 @@ class EventValidator
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
      * @param string|null $eventSchema
+     * @param bool $applyDefaultValues
      * @return bool
      * @throws \Micronative\ServiceSchema\Event\Exception\EventValidatorException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-    public function validate(AbstractEvent $event = null, ?string $eventSchema = null)
+    public function validate(AbstractEvent $event = null, ?string $eventSchema = null, bool $applyDefaultValues = false)
     {
         $jsonObject = JsonReader::decode($event->toJson());
         if (empty($jsonObject)) {
@@ -40,7 +41,8 @@ class EventValidator
         }
 
         $schema = JsonReader::decode(JsonReader::read($eventSchema));
-        $this->validator->validate($jsonObject, $schema, Constraint::CHECK_MODE_APPLY_DEFAULTS);
+        $checkMode = $applyDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
+        $this->validator->validate($jsonObject, $schema, $checkMode);
 
         if (!$this->validator->isValid()) {
             throw new EventValidatorException(

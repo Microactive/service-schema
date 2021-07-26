@@ -65,7 +65,7 @@ class EventValidatorTest extends TestCase
     {
         $event = new SampleEvent("SomeName");
         $event->setName('User.Created')->setPayload(["name" => "Ken"]);
-        $validated = $this->validator->validate($event, $this->testDir . '/assets/schemas/SampleEvent.json');
+        $validated = $this->validator->validate($event, $this->testDir . '/assets/schemas/SampleEvent.json', true);
         $this->assertTrue($validated);
     }
 }
