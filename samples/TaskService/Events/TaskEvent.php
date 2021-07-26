@@ -9,7 +9,7 @@ class TaskEvent extends AbstractEvent
     /** @var \DateTime */
     private $receivedAt;
 
-    public function __construct(string $name, string $id = null, $payload = null)
+    public function __construct(string $name, string $id = null, array $payload = null)
     {
         parent::__construct($name, $id, $payload);
         $this->receivedAt = new \DateTime();

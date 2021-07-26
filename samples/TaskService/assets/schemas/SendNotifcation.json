@@ -28,11 +28,11 @@
           "type": "string",
           "minLength": 0,
           "maxLength": 256
+        },
+        "class": {
+          "type": "string",
+          "default": "\\App\\Entity\\User"
         }
-      },
-      "class": {
-        "type": "string",
-        "default": "\\App\\Entity\\User"
       },
       "required": [
         "name",

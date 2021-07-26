@@ -7,11 +7,10 @@ use Samples\UserService\UserApp;
 
 try {
     $broker = new MockBroker();
-
     $userApp = new UserApp($broker);
-    $userApp->createUser('Ken', 'ken.ngo@gmail.com');
-
     $taskApp = new TaskApp($broker);
+
+    $userApp->createUser('Ken', 'ken.ngo@gmail.com');
     $taskApp->listen();
 }catch (Exception $e){
     echo $e->getMessage();
