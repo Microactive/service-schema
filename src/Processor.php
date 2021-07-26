@@ -37,6 +37,9 @@ class Processor implements ProcessorInterface
     /** @var \Psr\Container\ContainerInterface */
     protected $container;
 
+    /** @var string|null */
+    protected $schemaDir;
+
     /**
      * ServiceProvider constructor.
      *
@@ -56,10 +59,11 @@ class Processor implements ProcessorInterface
         $this->eventConfigRegister = new EventConfigRegister($eventConfigs);
         $this->serviceConfigRegister = new ServiceConfigRegister($serviceConfigs);
         $this->container = $container;
+        $this->schemaDir = $schemaDir;
         $this->serviceFactory = new ServiceFactory();
         $validator = new Validator();
-        $this->serviceValidator = new ServiceValidator($schemaDir, $validator);
-        $this->eventValidator = new EventValidator($schemaDir, $validator);
+        $this->serviceValidator = new ServiceValidator($this->schemaDir, $validator);
+        $this->eventValidator = new EventValidator($this->schemaDir, $validator);
         $this->loadConfigs();
     }
 
@@ -339,6 +343,44 @@ class Processor implements ProcessorInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * @return \Micronative\ServiceSchema\Validators\EventValidator
+     */
+    public function getEventValidator(): \Micronative\ServiceSchema\Validators\EventValidator
+    {
+        return $this->eventValidator;
+    }
+
+    /**
+     * @param \Micronative\ServiceSchema\Validators\EventValidator $eventValidator
+     * @return Processor
+     */
+    public function setEventValidator(\Micronative\ServiceSchema\Validators\EventValidator $eventValidator): Processor
+    {
+        $this->eventValidator = $eventValidator;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSchemaDir(): ?string
+    {
+        return $this->schemaDir;
+    }
+
+    /**
+     * @param string|null $schemaDir
+     * @return Processor
+     */
+    public function setSchemaDir(?string $schemaDir): Processor
+    {
+        $this->schemaDir = $schemaDir;
 
         return $this;
     }

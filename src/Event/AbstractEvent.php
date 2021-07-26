@@ -23,7 +23,8 @@ abstract class AbstractEvent
      * @param string $name
      * @param string|null $id
      * @param array|null $payload
-     * @param string|null $schema
+     * @param string|null $schema relative path (from Processor::schemaDir) to json schema file
+     * @see \Micronative\ServiceSchema\Processor::schemaDir
      */
     public function __construct(string $name, string $id = null, array $payload = null, string $schema = null)
     {

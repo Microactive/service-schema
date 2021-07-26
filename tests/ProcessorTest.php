@@ -9,6 +9,7 @@ use Micronative\ServiceSchema\Exceptions\ProcessorException;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Processor;
 use Micronative\ServiceSchema\Service\ServiceFactory;
+use Micronative\ServiceSchema\Validators\EventValidator;
 use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
@@ -291,6 +292,14 @@ class ProcessorTest extends TestCase
         $this->processor->setServiceValidator($serviceValidator);
         $this->assertSame($serviceValidator, $this->processor->getServiceValidator());
 
+        $eventValidator = new EventValidator();
+        $this->processor->setEventValidator($eventValidator);
+        $this->assertSame($eventValidator, $this->processor->getEventValidator());
+
+        $schemaDir = "/app";
+        $this->processor->setSchemaDir($schemaDir);
+        $this->assertEquals($schemaDir, $this->processor->getSchemaDir())
+        ;
         $container = new SampleContainer();
         $this->processor->setContainer($container);
         $this->assertEquals($container, $this->processor->getContainer());
