@@ -24,7 +24,7 @@ class TaskEvent extends AbstractEvent
             "id" => $this->id,
             "name" => $this->name,
             "payload" => $this->payload,
-            "received" => date('Y-m-d:H:i:s', time())
+            "received" => $this->receivedAt->format('Y-m-d H:i:s')
         ];
     }
 }
