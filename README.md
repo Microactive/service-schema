@@ -41,7 +41,7 @@ The codes under [samples](./samples) is a mock microservice architecture:
 - a [MessageBroker](./samples/MessageBroker)
 - two microservices: [UserService](./samples/UserService) and [TaskService](./samples/TaskService)
 
-When a User created or updated on UserService, it will publish an event to MessageBroker. TaskService is listening to these events and use ServiceSchema to process the incoming events
+When a User created or updated on UserService, it will use ServiceSchema to validate the event then publish it to MessageBroker. TaskService is listening to these events and use ServiceSchema to process the incoming events
 ```php
 try {
     $broker = new MockBroker();
