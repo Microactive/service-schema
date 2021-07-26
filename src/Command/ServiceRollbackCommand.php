@@ -4,19 +4,28 @@ namespace Micronative\ServiceSchema\Command;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\RollbackInterface;
-use Micronative\ServiceSchema\Service\ServiceValidator;
+use Micronative\ServiceSchema\Validators\ServiceValidator;
 
-class RollbackCommand extends AbstractCommand implements CommandInterface
+class ServiceRollbackCommand implements CommandInterface
 {
+    /** @var \Micronative\ServiceSchema\Validators\ServiceValidator */
+    protected $serviceValidator;
+
+    /** @var \Micronative\ServiceSchema\Service\RollbackInterface */
+    protected $service;
+
+    /** @var \Micronative\ServiceSchema\Event\AbstractEvent */
+    protected $event;
+
     /**
      * RollbackCommand constructor.
-     * @param \Micronative\ServiceSchema\Service\ServiceValidator $validator
+     * @param \Micronative\ServiceSchema\Validators\ServiceValidator $validator
      * @param \Micronative\ServiceSchema\Service\RollbackInterface $service
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      */
     public function __construct(ServiceValidator $validator, RollbackInterface $service, AbstractEvent $event)
     {
-        $this->validator = $validator;
+        $this->serviceValidator = $validator;
         $this->service = $service;
         $this->event = $event;
     }
@@ -24,11 +33,11 @@ class RollbackCommand extends AbstractCommand implements CommandInterface
     /**
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function execute()
     {
-        $this->validate();
+        $this->serviceValidator->validateService($this->event, $this->service, true);
         return $this->service->rollback($this->event);
     }
 }

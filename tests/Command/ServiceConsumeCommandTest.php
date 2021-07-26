@@ -2,19 +2,19 @@
 
 namespace Tests\Command;
 
-use Micronative\ServiceSchema\Command\ConsumeCommand;
-use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
-use Micronative\ServiceSchema\Service\ServiceValidator;
+use Micronative\ServiceSchema\Command\ServiceConsumeCommand;
+use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
+use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Service\Samples\CreateTask;
 use Tests\Service\Samples\SampleEvent;
 
-class ConsumeCommandTest extends TestCase
+class ServiceConsumeCommandTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\ServiceSchema\Command\ConsumeCommand */
+    /** @coversDefaultClass \Micronative\ServiceSchema\Command\EventValidateCommand */
     private $command;
 
-    /** @var \Micronative\ServiceSchema\Service\ServiceValidator */
+    /** @var \Micronative\ServiceSchema\Validators\ServiceValidator */
     private $validator;
 
     /** @var \Micronative\ServiceSchema\Service\ServiceInterface */
@@ -34,25 +34,26 @@ class ConsumeCommandTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function testExecute()
     {
         $this->service->setJsonSchema("/assets/schemas/CreateTask.json");
-        $this->command = new ConsumeCommand($this->validator, $this->service, $this->event);
+        $this->command = new ServiceConsumeCommand($this->validator, $this->service, $this->event);
         $result = $this->command->execute();
         $this->assertEquals('Task created.', $result);
     }
 
     /**
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function testExecuteThrowsException()
     {
         $this->service->setJsonSchema("/assets/schemas/CreateContact.json");
-        $this->command = new ConsumeCommand($this->validator, $this->service, $this->event);
-        $this->expectException(ServiceException::class);
+        $this->command = new ServiceConsumeCommand($this->validator, $this->service, $this->event);
+        $this->expectException(ValidatorException::class);
+        $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');
         $this->command->execute();
     }
 }

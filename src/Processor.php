@@ -2,8 +2,10 @@
 
 namespace Micronative\ServiceSchema;
 
-use Micronative\ServiceSchema\Command\ConsumeCommand;
-use Micronative\ServiceSchema\Command\RollbackCommand;
+use JsonSchema\Validator;
+use Micronative\ServiceSchema\Command\EventValidateCommand;
+use Micronative\ServiceSchema\Command\ServiceConsumeCommand;
+use Micronative\ServiceSchema\Command\ServiceRollbackCommand;
 use Micronative\ServiceSchema\Config\EventConfigRegister;
 use Micronative\ServiceSchema\Config\ServiceConfigRegister;
 use Micronative\ServiceSchema\Event\AbstractEvent;
@@ -11,7 +13,8 @@ use Micronative\ServiceSchema\Exceptions\ProcessorException;
 use Micronative\ServiceSchema\Service\RollbackInterface;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceInterface;
-use Micronative\ServiceSchema\Service\ServiceValidator;
+use Micronative\ServiceSchema\Validators\EventValidator;
+use Micronative\ServiceSchema\Validators\ServiceValidator;
 use Psr\Container\ContainerInterface;
 
 class Processor implements ProcessorInterface
@@ -25,8 +28,11 @@ class Processor implements ProcessorInterface
     /** @var \Micronative\ServiceSchema\Service\ServiceFactory */
     protected $serviceFactory;
 
-    /** @var \Micronative\ServiceSchema\Service\ServiceValidator */
+    /** @var \Micronative\ServiceSchema\Validators\ServiceValidator */
     protected $serviceValidator;
+
+    /** @var \Micronative\ServiceSchema\Validators\EventValidator */
+    protected $eventValidator;
 
     /** @var \Psr\Container\ContainerInterface */
     protected $container;
@@ -49,30 +55,23 @@ class Processor implements ProcessorInterface
     ) {
         $this->eventConfigRegister = new EventConfigRegister($eventConfigs);
         $this->serviceConfigRegister = new ServiceConfigRegister($serviceConfigs);
-        $this->serviceFactory = new ServiceFactory();
-        $this->serviceValidator = new ServiceValidator($schemaDir);
         $this->container = $container;
+        $this->serviceFactory = new ServiceFactory();
+        $validator = new Validator();
+        $this->serviceValidator = new ServiceValidator($schemaDir, $validator);
+        $this->eventValidator = new EventValidator($schemaDir, $validator);
         $this->loadConfigs();
-    }
-
-    /**
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     */
-    protected function loadConfigs()
-    {
-        $this->eventConfigRegister->loadEventConfigs();
-        $this->serviceConfigRegister->loadServiceConfigs();
     }
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
      * @param array|null $filteredEvents
-     * @param bool $return if yes return first service result
-     * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @param bool $return
+     * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function process(AbstractEvent $event = null, array $filteredEvents = null, bool $return = false)
     {
@@ -104,6 +103,7 @@ class Processor implements ProcessorInterface
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function rollback(AbstractEvent $event)
     {
@@ -123,6 +123,31 @@ class Processor implements ProcessorInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @param string|null $schemaFile
+     * @param bool $applyDefaultValues
+     * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent|void
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     */
+    public function validate(AbstractEvent $event, string $schemaFile = null, bool $applyDefaultValues = false)
+    {
+        $validateCommand = new EventValidateCommand($this->eventValidator, $event, $schemaFile, $applyDefaultValues);
+
+        return $validateCommand->execute();
+    }
+
+    /**
+     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     */
+    private function loadConfigs()
+    {
+        $this->eventConfigRegister->loadEventConfigs();
+        $this->serviceConfigRegister->loadServiceConfigs();
     }
 
     /**
@@ -157,13 +182,14 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
-     * @param \Micronative\ServiceSchema\Service\ServiceInterface|null $service
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @param \Micronative\ServiceSchema\Service\ServiceInterface $service
      * @param array|null $callbacks
      * @param bool $return
-     * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
+     * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     private function runService(
         AbstractEvent $event,
@@ -171,7 +197,7 @@ class Processor implements ProcessorInterface
         array $callbacks = null,
         bool $return = false
     ) {
-        $consumeCommand = new ConsumeCommand($this->serviceValidator, $service, $event);
+        $consumeCommand = new ServiceConsumeCommand($this->serviceValidator, $service, $event);
         $result = $consumeCommand->execute();
         if ($return === true) {
             return $result;
@@ -185,15 +211,15 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @param \Micronative\ServiceSchema\Event\AbstractEvent|null $event
-     * @param \Micronative\ServiceSchema\Service\RollbackInterface|null $service
-     * @return \Micronative\ServiceSchema\Event\AbstractEvent|bool
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @param \Micronative\ServiceSchema\Service\RollbackInterface $service
+     * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     private function rollbackService(AbstractEvent $event, RollbackInterface $service)
     {
-        $rollbackCommand = new RollbackCommand($this->serviceValidator, $service, $event);
+        $rollbackCommand = new ServiceRollbackCommand($this->serviceValidator, $service, $event);
 
         return $rollbackCommand->execute();
     }
@@ -204,6 +230,7 @@ class Processor implements ProcessorInterface
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     private function runCallbacks(AbstractEvent $event, array $callbacks)
     {
@@ -215,7 +242,7 @@ class Processor implements ProcessorInterface
             if ($service = $this->serviceFactory->createService($serviceConfig, $this->container)) {
                 continue;
             }
-            $consumeCommand = new ConsumeCommand($this->serviceValidator, $service, $event);
+            $consumeCommand = new ServiceConsumeCommand($this->serviceValidator, $service, $event);
             $consumeCommand->execute();
         }
 
@@ -280,7 +307,7 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @return \Micronative\ServiceSchema\Service\ServiceValidator
+     * @return \Micronative\ServiceSchema\Validators\ServiceValidator
      */
     public function getServiceValidator()
     {
@@ -288,7 +315,7 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @param \Micronative\ServiceSchema\Service\ServiceValidator|null $serviceValidator
+     * @param \Micronative\ServiceSchema\Validators\ServiceValidator|null $serviceValidator
      * @return \Micronative\ServiceSchema\Processor
      */
     public function setServiceValidator(ServiceValidator $serviceValidator = null)

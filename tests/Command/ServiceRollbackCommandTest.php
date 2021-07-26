@@ -2,15 +2,15 @@
 
 namespace Tests\Command;
 
-use Micronative\ServiceSchema\Command\RollbackCommand;
-use Micronative\ServiceSchema\Service\ServiceValidator;
+use Micronative\ServiceSchema\Command\ServiceRollbackCommand;
+use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Service\Samples\CreateContact;
 use Tests\Service\Samples\SampleEvent;
 
-class RollbackCommandTest extends TestCase
+class ServiceRollbackCommandTest extends TestCase
 {
-    /** @coversDefaultClass \Micronative\ServiceSchema\Command\RollbackCommand */
+    /** @coversDefaultClass \Micronative\ServiceSchema\Command\ServiceRollbackCommand */
     private $command;
 
     public function setUp(): void
@@ -20,12 +20,12 @@ class RollbackCommandTest extends TestCase
         $validator = new ServiceValidator($testDir);
         $event = new SampleEvent('Test.Event.Name', 1, ['name' => 'Ken']);
         $service = new CreateContact();
-        $this->command = new RollbackCommand($validator, $service, $event);
+        $this->command = new ServiceRollbackCommand($validator, $service, $event);
     }
 
     /**
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function testExecute()
     {

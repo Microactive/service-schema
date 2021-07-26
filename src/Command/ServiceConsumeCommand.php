@@ -4,19 +4,28 @@ namespace Micronative\ServiceSchema\Command;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\ServiceInterface;
-use Micronative\ServiceSchema\Service\ServiceValidator;
+use Micronative\ServiceSchema\Validators\ServiceValidator;
 
-class ConsumeCommand extends AbstractCommand implements CommandInterface
+class ServiceConsumeCommand implements CommandInterface
 {
+    /** @var \Micronative\ServiceSchema\Validators\ServiceValidator */
+    protected $serviceValidator;
+
+    /** @var \Micronative\ServiceSchema\Service\ServiceInterface */
+    protected $service;
+
+    /** @var \Micronative\ServiceSchema\Event\AbstractEvent */
+    protected $event;
+
     /**
      * ConsumeCommand constructor.
-     * @param \Micronative\ServiceSchema\Service\ServiceValidator $validator
+     * @param \Micronative\ServiceSchema\Validators\ServiceValidator $validator
      * @param \Micronative\ServiceSchema\Service\ServiceInterface $service
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      */
     public function __construct(ServiceValidator $validator, ServiceInterface $service, AbstractEvent $event)
     {
-        $this->validator = $validator;
+        $this->serviceValidator = $validator;
         $this->service = $service;
         $this->event = $event;
     }
@@ -24,11 +33,11 @@ class ConsumeCommand extends AbstractCommand implements CommandInterface
     /**
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
     public function execute()
     {
-        $this->validate();
+        $this->serviceValidator->validateService($this->event, $this->service, true);
         return $this->service->consume($this->event);
     }
 }

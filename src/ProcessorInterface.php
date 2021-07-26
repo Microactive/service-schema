@@ -24,4 +24,12 @@ interface ProcessorInterface
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function rollback(AbstractEvent $event);
+
+    /**
+     * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
+     * @param string|null $schemaFile
+     * @param bool $applyDefaultValues
+     * @return bool|void
+     */
+    public function validate(AbstractEvent $event, string $schemaFile = null, bool $applyDefaultValues = false);
 }
