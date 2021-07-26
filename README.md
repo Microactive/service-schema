@@ -54,4 +54,19 @@ try {
     echo $e->getMessage();
 }
 ```
-@see: [mock_microservices.php](./samples/mock_microservices.php)
+@see: [create_user.php](./samples/create_user.php)
+
+```php
+try {
+    $broker = new MockBroker();
+    $userApp = new UserApp($broker);
+    $taskApp = new TaskApp($broker);
+
+    $user = new User('Ken', 'ken.ngo@gmail.com');
+    $userApp->updateUser($user);
+    $taskApp->listen();
+}catch (Exception $e){
+    echo $e->getMessage();
+}
+```
+@see: [update_user.php](./samples/update_user.php)
