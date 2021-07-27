@@ -10,7 +10,7 @@ class SendNotificationToNewUser extends AbstractService implements ServiceInterf
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo 'Notification has been sent to new user.' . PHP_EOL;
+        echo "Notification has been sent to new user: {$event->getPayload()['name']}, {$event->getPayload()['email']}" . PHP_EOL;
 
         return $event;
     }

@@ -10,7 +10,7 @@ class SendNotificationToUpdatedUser extends AbstractService implements ServiceIn
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo 'Notification has been sent to updated user.' . PHP_EOL;
+        echo "Notification has been sent to updated user: {$event->getPayload()['name']}, {$event->getPayload()['email']}" . PHP_EOL;
 
         return $event;
     }

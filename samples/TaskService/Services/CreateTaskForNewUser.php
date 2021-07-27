@@ -11,7 +11,7 @@ class CreateTaskForNewUser extends AbstractService implements ServiceInterface, 
 {
     public function consume(AbstractEvent $event = null)
     {
-        echo 'Task has been created for new user.' . PHP_EOL;
+        echo "Task has been created for new user: {$event->getPayload()['name']}, {$event->getPayload()['email']}" . PHP_EOL;
 
         return $event;
     }
