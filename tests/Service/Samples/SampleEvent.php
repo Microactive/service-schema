@@ -31,7 +31,7 @@ class SampleEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Tests\Service\Samples\SampleEvent
      */
-    public function jsonUnserialize(string $jsonString)
+    public function unserialize(string $jsonString)
     {
         $jsonObject = json_decode($jsonString);
         $this->name = $jsonObject->name;

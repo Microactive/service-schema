@@ -19,7 +19,7 @@ class SampleEventTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::jsonSerialize
-     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::jsonUnserialize
+     * @covers \Micronative\ServiceSchema\Event\AbstractEvent::unserialize
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::getId
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::getName
      * @covers \Micronative\ServiceSchema\Event\AbstractEvent::getPayload
@@ -51,7 +51,7 @@ class SampleEventTest extends TestCase
         );
 
         $event = new SampleEvent('SomeEvent');
-        $event->jsonUnserialize('{"name":"Test.Event.Name","id":"1","payload":{"name":"Ken"}}');
+        $event->unserialize('{"name":"Test.Event.Name","id":"1","payload":{"name":"Ken"}}');
         $this->assertEquals("Test.Event.Name", $event->getName());
         $this->assertEquals(1, $event->getId());
         $this->assertEquals(['name' => 'Ken'], $event->getPayload());

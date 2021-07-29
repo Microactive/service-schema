@@ -4,7 +4,7 @@ namespace Micronative\ServiceSchema\Service;
 
 use Psr\Container\ContainerInterface;
 
-abstract class AbstractService
+abstract class AbstractService implements ServiceInterface
 {
     /** @var string */
     protected $name;

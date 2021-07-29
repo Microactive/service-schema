@@ -6,7 +6,7 @@ use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\AbstractService;
 use Micronative\ServiceSchema\Service\ServiceInterface;
 
-class CreateTask extends AbstractService implements ServiceInterface
+class CreateTask extends AbstractService
 {
     public function consume(AbstractEvent $event = null)
     {

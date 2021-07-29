@@ -36,7 +36,7 @@ class TaskEvent extends AbstractEvent
      * @param string $jsonString
      * @return \Samples\TaskService\Events\TaskEvent
      */
-    public function jsonUnserialize(string $jsonString)
+    public function unserialize(string $jsonString)
     {
         $data = json_decode($jsonString, true);
         $this->name = isset($data['name']) ? $data['name'] : null;

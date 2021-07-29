@@ -4,9 +4,8 @@ namespace Samples\TaskService\Services;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\AbstractService;
-use Micronative\ServiceSchema\Service\ServiceInterface;
 
-class SendNotificationToUpdatedUser extends AbstractService implements ServiceInterface
+class SendNotificationToUpdatedUser extends AbstractService
 {
     public function consume(AbstractEvent $event = null)
     {

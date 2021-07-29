@@ -60,7 +60,7 @@ class EventValidator
         }
 
         if ($applyDefaultValues === true) {
-            $event->jsonUnserialize(json_encode($jsonObject));
+            $event->unserialize(json_encode($jsonObject));
         }
 
         return true;
