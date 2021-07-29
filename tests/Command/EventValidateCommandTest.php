@@ -3,7 +3,7 @@
 namespace Tests\Command;
 
 use Micronative\ServiceSchema\Command\EventValidateCommand;
-use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
+use Micronative\ServiceSchema\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Service\Samples\CreateTask;
@@ -33,8 +33,8 @@ class EventValidateCommandTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testExecute()
     {
@@ -50,8 +50,8 @@ class EventValidateCommandTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testExecuteThrowsException()
     {

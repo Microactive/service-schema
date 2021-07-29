@@ -2,9 +2,9 @@
 
 namespace Tests\Config;
 
-use Micronative\ServiceSchema\Config\Exceptions\ConfigException;
 use Micronative\ServiceSchema\Config\ServiceConfig;
 use Micronative\ServiceSchema\Config\ServiceConfigRegister;
+use Micronative\ServiceSchema\Exceptions\ConfigException;
 use PHPUnit\Framework\TestCase;
 
 class ServiceConfigRegisterTest extends TestCase
@@ -26,8 +26,8 @@ class ServiceConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::loadServiceConfigs
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testLoadServicesWithEmptyConfigs()
     {
@@ -38,8 +38,8 @@ class ServiceConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::loadServiceConfigs
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testLoadServicesWithUnsupportedFile()
     {
@@ -54,8 +54,8 @@ class ServiceConfigRegisterTest extends TestCase
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::loadFromJson
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::loadFromYaml
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::loadFromArray
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testLoadServices()
     {
@@ -68,8 +68,8 @@ class ServiceConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::retrieveServiceConfig
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testRegisterServiceConfigs()
     {
@@ -90,8 +90,8 @@ class ServiceConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::retrieveServiceConfig
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testRetrieveServiceConfig()
     {
@@ -109,8 +109,8 @@ class ServiceConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\ServiceConfigRegister::retrieveServiceConfig
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testRetrieveServiceConfigByAlias()
     {

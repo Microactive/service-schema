@@ -3,9 +3,9 @@
 namespace Tests\Validators;
 
 use JsonSchema\Validator;
-use Micronative\ServiceSchema\Json\Exceptions\JsonException;
+use Micronative\ServiceSchema\Exceptions\JsonException;
+use Micronative\ServiceSchema\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Validators\EventValidator;
-use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 use PHPUnit\Framework\TestCase;
 use Tests\Event\SampleEvent;
 use Tests\Event\SampleInvalidEvent;
@@ -26,8 +26,8 @@ class EventValidatorTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testValidateWithInvalidJsonEvent()
     {

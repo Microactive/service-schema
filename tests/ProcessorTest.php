@@ -6,11 +6,11 @@ use Micronative\ServiceSchema\Config\EventConfigRegister;
 use Micronative\ServiceSchema\Config\ServiceConfigRegister;
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Exceptions\ProcessorException;
+use Micronative\ServiceSchema\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Processor;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Validators\EventValidator;
-use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Event\SampleEvent;
@@ -24,8 +24,8 @@ class ProcessorTest extends TestCase
     protected $testDir;
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function setUp(): void
     {
@@ -40,9 +40,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcess()
     {
@@ -56,9 +56,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcessWithReturn()
     {
@@ -74,8 +74,8 @@ class ProcessorTest extends TestCase
      * @covers \Micronative\ServiceSchema\Processor::process
      * @covers \Micronative\ServiceSchema\Processor::runService
      * @covers \Micronative\ServiceSchema\Processor::runCallbacks
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testProcessFailed()
@@ -91,9 +91,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcessWithFilteredEvent()
     {
@@ -108,9 +108,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcessWithNoneRegisteredEvent()
     {
@@ -123,9 +123,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcessWithEmptyServiceEvent()
     {
@@ -138,9 +138,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcessWithNoneExistingServiceEvent()
     {
@@ -153,9 +153,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testProcessWithInvalidServiceClass()
     {
@@ -168,9 +168,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testRollback()
     {
@@ -185,8 +185,8 @@ class ProcessorTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Processor::rollback
      * @covers \Micronative\ServiceSchema\Processor::rollbackService
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function testRollbackWithInvalidValidation()
@@ -202,9 +202,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testRollbackWithInvalidServiceClass()
     {
@@ -217,9 +217,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testRollbackWithNoneExistingServiceEvent()
     {
@@ -232,9 +232,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testRollbackWithEmptyServiceEvent()
     {
@@ -247,9 +247,9 @@ class ProcessorTest extends TestCase
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testRollbackWithNoneRegisteredEvent()
     {
@@ -261,8 +261,8 @@ class ProcessorTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testValidate()
     {

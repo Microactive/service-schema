@@ -18,8 +18,8 @@ class TaskApp
     /**
      * App constructor.
      * @param \Samples\MessageBroker\MockBroker|null $broker
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function __construct(MockBroker $broker = null)
     {
@@ -34,9 +34,9 @@ class TaskApp
 
     /**
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function listen()
     {

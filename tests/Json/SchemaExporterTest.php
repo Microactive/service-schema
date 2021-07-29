@@ -2,10 +2,10 @@
 
 namespace Tests\Json;
 
-use PHPUnit\Framework\TestCase;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Json\SchemaExporter;
 use Micronative\ServiceSchema\Processor;
+use PHPUnit\Framework\TestCase;
 
 class SchemaExporterTest extends TestCase
 {
@@ -22,8 +22,8 @@ class SchemaExporterTest extends TestCase
     protected $processor;
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function setUp(): void
     {
@@ -38,7 +38,7 @@ class SchemaExporterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::__construct
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::export
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testExportJson()
     {
@@ -51,7 +51,7 @@ class SchemaExporterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::__construct
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::export
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testExportArray()
     {
@@ -64,7 +64,7 @@ class SchemaExporterTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::__construct
      * @covers \Micronative\ServiceSchema\Json\SchemaExporter::export
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testExportDefault()
     {

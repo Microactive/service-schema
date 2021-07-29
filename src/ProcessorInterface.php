@@ -11,8 +11,8 @@ interface ProcessorInterface
      * @param array|null $filteredEvents
      * @param bool $return return first service result
      * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function process(AbstractEvent $event, array $filteredEvents = null, bool $return = false);
@@ -20,7 +20,7 @@ interface ProcessorInterface
     /**
      * @param string|\Micronative\ServiceSchema\Event\AbstractEvent $event
      * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
      */
     public function rollback(AbstractEvent $event);

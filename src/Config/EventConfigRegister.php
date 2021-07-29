@@ -2,7 +2,7 @@
 
 namespace Micronative\ServiceSchema\Config;
 
-use Micronative\ServiceSchema\Config\Exceptions\ConfigException;
+use Micronative\ServiceSchema\Exceptions\ConfigException;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Symfony\Component\Yaml\Yaml;
 
@@ -26,8 +26,8 @@ class EventConfigRegister
 
     /**
      * @return \Micronative\ServiceSchema\Config\EventConfigRegister
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function loadEventConfigs()
     {
@@ -85,7 +85,7 @@ class EventConfigRegister
 
     /**
      * @param string|null $file
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     private function loadFromJson(string $file = null)
     {

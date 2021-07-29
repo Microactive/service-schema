@@ -26,7 +26,7 @@ abstract class AbstractEvent implements JsonSerializable
      * name is required
      *
      * @return false|string
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     abstract public function jsonSerialize();
     /**
@@ -45,7 +45,7 @@ abstract class AbstractEvent implements JsonSerializable
      * Set event properties from json string
      * @param string $jsonString
      * @return \Micronative\ServiceSchema\Event\AbstractEvent
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     abstract public function unserialize(string $jsonString);
     /**

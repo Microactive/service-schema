@@ -5,10 +5,8 @@ namespace Micronative\ServiceSchema\Validators;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\Validator;
 use Micronative\ServiceSchema\Event\AbstractEvent;
+use Micronative\ServiceSchema\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Json\JsonReader;
-use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
-
-use function Webmozart\Assert\Tests\StaticAnalysis\string;
 
 class EventValidator
 {
@@ -33,8 +31,8 @@ class EventValidator
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @param bool $applyDefaultValues
      * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function validateEvent(AbstractEvent $event, bool $applyDefaultValues = false)
     {

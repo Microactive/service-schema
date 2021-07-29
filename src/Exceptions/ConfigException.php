@@ -1,8 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Config\Exceptions;
-
-use Micronative\ServiceSchema\Exceptions\ServiceSchemaException;
+namespace Micronative\ServiceSchema\Exceptions;
 
 class ConfigException extends ServiceSchemaException
 {

@@ -3,10 +3,10 @@
 namespace Tests\Service;
 
 use Micronative\ServiceSchema\Config\ServiceConfig;
-use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
-use PHPUnit\Framework\TestCase;
+use Micronative\ServiceSchema\Exceptions\ServiceException;
 use Micronative\ServiceSchema\Service\ServiceFactory;
 use Micronative\ServiceSchema\Service\ServiceInterface;
+use PHPUnit\Framework\TestCase;
 
 class ServiceFactoryTest extends TestCase
 {
@@ -25,7 +25,7 @@ class ServiceFactoryTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
      */
     public function testCreateInvalidServiceClass()
     {
@@ -38,7 +38,7 @@ class ServiceFactoryTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
      */
     public function testCreateInvalidService()
     {
@@ -51,7 +51,7 @@ class ServiceFactoryTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Service\ServiceFactory::createService
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
      */
     public function testCreateService()
     {

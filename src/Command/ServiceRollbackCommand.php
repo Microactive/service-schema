@@ -32,8 +32,8 @@ class ServiceRollbackCommand implements CommandInterface
 
     /**
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function execute()
     {

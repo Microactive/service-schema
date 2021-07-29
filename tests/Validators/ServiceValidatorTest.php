@@ -3,7 +3,6 @@
 namespace Tests\Validators;
 
 use Micronative\ServiceSchema\Json\JsonReader;
-use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 use Micronative\ServiceSchema\Validators\ServiceValidator;
 use PHPUnit\Framework\TestCase;
 use Tests\Event\SampleEvent;
@@ -26,8 +25,8 @@ class ServiceValidatorTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Validators\ServiceValidator::validateService
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testValidateWithEmptyJsonSchema()
     {
@@ -40,8 +39,8 @@ class ServiceValidatorTest extends TestCase
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function testValidate()
     {

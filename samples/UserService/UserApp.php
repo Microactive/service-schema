@@ -24,8 +24,8 @@ class UserApp
     /**
      * UserApp constructor.
      * @param \Samples\MessageBroker\MockBroker|null $broker
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function __construct(MockBroker $broker = null)
     {
@@ -38,8 +38,8 @@ class UserApp
     /**
      * @param string $name
      * @param string $email
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function createUser(string $name, string $email)
     {
@@ -59,8 +59,8 @@ class UserApp
 
     /**
      * @param \Samples\UserService\Entities\User $user
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function updateUser(User $user)
     {

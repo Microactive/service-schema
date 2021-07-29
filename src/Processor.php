@@ -47,8 +47,8 @@ class Processor implements ProcessorInterface
      * @param array|null $serviceConfigs
      * @param string|null $schemaDir a relative dir from where the schemas are stored
      * @param \Psr\Container\ContainerInterface|null $container
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function __construct(
         array $eventConfigs = null,
@@ -73,9 +73,9 @@ class Processor implements ProcessorInterface
      * @param bool $return
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function process(AbstractEvent $event = null, array $filteredEvents = null, bool $return = false)
     {
@@ -105,9 +105,9 @@ class Processor implements ProcessorInterface
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @return bool
      * @throws \Micronative\ServiceSchema\Exceptions\ProcessorException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function rollback(AbstractEvent $event)
     {
@@ -133,8 +133,8 @@ class Processor implements ProcessorInterface
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @param bool $applyDefaultValues
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent|void
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     public function validate(AbstractEvent $event, bool $applyDefaultValues = false)
     {
@@ -144,8 +144,8 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     private function loadConfigs()
     {
@@ -190,9 +190,9 @@ class Processor implements ProcessorInterface
      * @param array|null $callbacks
      * @param bool $return
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     private function runService(
         AbstractEvent $event,
@@ -217,8 +217,8 @@ class Processor implements ProcessorInterface
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @param \Micronative\ServiceSchema\Service\RollbackInterface $service
      * @return bool|\Micronative\ServiceSchema\Event\AbstractEvent
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     private function rollbackService(AbstractEvent $event, RollbackInterface $service)
     {
@@ -231,9 +231,9 @@ class Processor implements ProcessorInterface
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
      * @param array $callbacks
      * @return bool
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
-     * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ValidatorException
      */
     private function runCallbacks(AbstractEvent $event, array $callbacks)
     {

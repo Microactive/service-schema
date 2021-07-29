@@ -3,7 +3,7 @@
 namespace Micronative\ServiceSchema\Service;
 
 use Micronative\ServiceSchema\Config\ServiceConfig;
-use Micronative\ServiceSchema\Service\Exceptions\ServiceException;
+use Micronative\ServiceSchema\Exceptions\ServiceException;
 use Psr\Container\ContainerInterface;
 
 class ServiceFactory
@@ -12,7 +12,7 @@ class ServiceFactory
      * @param \Micronative\ServiceSchema\Config\ServiceConfig $serviceConfig
      * @param \Psr\Container\ContainerInterface|null $container
      * @return false|\Micronative\ServiceSchema\Service\ServiceInterface
-     * @throws \Micronative\ServiceSchema\Service\Exceptions\ServiceException
+     * @throws \Micronative\ServiceSchema\Exceptions\ServiceException
      */
     public function createService(ServiceConfig $serviceConfig, ContainerInterface $container = null)
     {

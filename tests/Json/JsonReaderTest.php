@@ -2,9 +2,9 @@
 
 namespace Tests\Json;
 
-use PHPUnit\Framework\TestCase;
-use Micronative\ServiceSchema\Json\Exceptions\JsonException;
+use Micronative\ServiceSchema\Exceptions\JsonException;
 use Micronative\ServiceSchema\Json\JsonReader;
+use PHPUnit\Framework\TestCase;
 
 class JsonReaderTest extends TestCase
 {
@@ -21,7 +21,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::read
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testReadEmptyFile()
     {
@@ -31,7 +31,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::read
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testReadInvalidFile()
     {
@@ -42,7 +42,7 @@ class JsonReaderTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::decode
      * @covers \Micronative\ServiceSchema\Json\JsonReader::read
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testDecodeFailed()
     {
@@ -52,7 +52,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::read
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testRead()
     {
@@ -64,7 +64,7 @@ class JsonReaderTest extends TestCase
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::read
      * @covers \Micronative\ServiceSchema\Json\JsonReader::decode
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testDecode()
     {
@@ -83,7 +83,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::encode
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testEncodeFailed()
     {
@@ -93,7 +93,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::encode
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testEncode()
     {
@@ -104,7 +104,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::save
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testSaveEmptyFile()
     {
@@ -115,7 +115,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::save
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testSaveEmptyContent()
     {
@@ -127,7 +127,7 @@ class JsonReaderTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Json\JsonReader::save
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
     public function testSave()
     {

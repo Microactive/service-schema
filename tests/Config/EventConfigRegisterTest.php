@@ -4,7 +4,7 @@ namespace Tests\Config;
 
 use Micronative\ServiceSchema\Config\EventConfig;
 use Micronative\ServiceSchema\Config\EventConfigRegister;
-use Micronative\ServiceSchema\Config\Exceptions\ConfigException;
+use Micronative\ServiceSchema\Exceptions\ConfigException;
 use PHPUnit\Framework\TestCase;
 
 class EventConfigRegisterTest extends TestCase
@@ -24,8 +24,8 @@ class EventConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventConfigRegister::loadEventConfigs
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testLoadEventsWithEmptyConfigs()
     {
@@ -36,8 +36,8 @@ class EventConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventConfigRegister::loadEventConfigs
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testLoadEventsWithUnsupportedFiles()
     {
@@ -49,8 +49,8 @@ class EventConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventConfigRegister::loadEventConfigs
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testLoadEventConfigs()
     {
@@ -64,8 +64,8 @@ class EventConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventConfigRegister::registerEventConfig
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testRegisterEvent()
     {
@@ -85,8 +85,8 @@ class EventConfigRegisterTest extends TestCase
 
     /**
      * @covers \Micronative\ServiceSchema\Config\EventConfigRegister::retrieveEventConfig
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
-     * @throws \Micronative\ServiceSchema\Config\Exceptions\ConfigException
+     * @throws \Micronative\ServiceSchema\Exceptions\JsonException
+     * @throws \Micronative\ServiceSchema\Exceptions\ConfigException
      */
     public function testRetrieveEvent()
     {
