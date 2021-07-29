@@ -38,7 +38,7 @@ class EventValidator
      */
     public function validateEvent(AbstractEvent $event, bool $applyDefaultValues = false)
     {
-        if (empty($jsonSchema = $event->getSchema())) {
+        if (empty($schemaFile = $event->getSchema())) {
             return true;
         }
 
@@ -46,12 +46,12 @@ class EventValidator
             throw new ValidatorException(ValidatorException::INVALID_JSON);
         }
 
-        if (empty($schema = JsonReader::decode(JsonReader::read($this->schemaDir . $jsonSchema)))) {
+        if (empty($jsonSchema = JsonReader::decode(JsonReader::read($this->schemaDir . $schemaFile)))) {
             throw new ValidatorException(ValidatorException::INVALID_SCHEMA);
         }
 
         $checkMode = $applyDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
-        $this->validator->validate($jsonObject, $schema, $checkMode);
+        $this->validator->validate($jsonObject, $jsonSchema, $checkMode);
 
         if (!$this->validator->isValid()) {
             throw new ValidatorException(

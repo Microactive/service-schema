@@ -17,10 +17,10 @@ class ServiceValidator extends EventValidator
      */
     public function validateService(AbstractEvent $event, ServiceInterface $service, bool $applyPayloadDefaultValues = false)
     {
-        if (empty($jsonSchema = $service->getJsonSchema())) {
+        if (empty($schema = $service->getSchema())) {
             return true;
         }
-        $event->setSchema($jsonSchema);
+        $event->setSchema($schema);
 
         return $this->validateEvent($event, $applyPayloadDefaultValues);
     }

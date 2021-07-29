@@ -49,7 +49,7 @@ class ServiceValidatorTest extends TestCase
         $jsonObject = JsonReader::decode(JsonReader::read($file));
         $event = new SampleEvent('Users.afterSaveCommit.Create', null, (array)$jsonObject->payload);
         $service = new CreateContact();
-        $service->setJsonSchema("/assets/schemas/services/CreateContact.json");
+        $service->setSchema("/assets/schemas/services/CreateContact.json");
         $validated = $this->serviceValidator->validateService($event, $service, true);
         $this->assertTrue($validated);
 

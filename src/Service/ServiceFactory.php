@@ -26,7 +26,7 @@ class ServiceFactory
 
         if ($service instanceof ServiceInterface) {
             $service->setName($serviceClass);
-            $service->setJsonSchema($schema);
+            $service->setSchema($schema);
 
             return $service;
         }

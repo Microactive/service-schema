@@ -5,9 +5,8 @@ namespace Samples\TaskService\Services;
 use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Service\AbstractService;
 use Micronative\ServiceSchema\Service\RollbackInterface;
-use Micronative\ServiceSchema\Service\ServiceInterface;
 
-class CreateTaskForNewUser extends AbstractService implements ServiceInterface, RollbackInterface
+class CreateTaskForNewUser extends AbstractService implements RollbackInterface
 {
     public function consume(AbstractEvent $event = null)
     {

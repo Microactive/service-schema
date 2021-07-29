@@ -13,7 +13,7 @@ abstract class AbstractService
      * @var string relative path (from Processor::schemaDir) to json schema file
      * @@see \Micronative\ServiceSchema\Processor::schemaDir
      */
-    protected $jsonSchema;
+    protected $schema;
 
     /** @var \Psr\Container\ContainerInterface */
     protected $container;
@@ -26,18 +26,18 @@ abstract class AbstractService
     /**
      * @return string
      */
-    public function getJsonSchema()
+    public function getSchema()
     {
-        return $this->jsonSchema;
+        return $this->schema;
     }
     
     /**
-     * @param string|null $jsonSchema
+     * @param string|null $schema
      * @return \Micronative\ServiceSchema\Service\AbstractService
      */
-    public function setJsonSchema(string $jsonSchema = null)
+    public function setSchema(string $schema = null)
     {
-        $this->jsonSchema = $jsonSchema;
+        $this->schema = $schema;
         
         return $this;
     }

@@ -38,7 +38,7 @@ class ServiceConsumeCommandTest extends TestCase
      */
     public function testExecute()
     {
-        $this->service->setJsonSchema("/assets/schemas/services/CreateTask.json");
+        $this->service->setSchema("/assets/schemas/services/CreateTask.json");
         $this->command = new ServiceConsumeCommand($this->validator, $this->service, $this->event);
         $result = $this->command->execute();
         $this->assertEquals('Task created.', $result);
@@ -50,7 +50,7 @@ class ServiceConsumeCommandTest extends TestCase
      */
     public function testExecuteThrowsException()
     {
-        $this->service->setJsonSchema("/assets/schemas/services/CreateContact.json");
+        $this->service->setSchema("/assets/schemas/services/CreateContact.json");
         $this->command = new ServiceConsumeCommand($this->validator, $this->service, $this->event);
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches('%' . ValidatorException::INVALIDATED_EVENT . '%');

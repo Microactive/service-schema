@@ -22,11 +22,11 @@ class SampleServiceTest extends TestCase
     {
         $this->sampleService
             ->setName('Create.Contact')
-            ->setJsonSchema('json_schema_file')
+            ->setSchema('json_schema_file')
             ->setContainer(new SampleContainer());
 
         $this->assertEquals('Create.Contact', $this->sampleService->getName());
-        $this->assertEquals('json_schema_file', $this->sampleService->getJsonSchema());
+        $this->assertEquals('json_schema_file', $this->sampleService->getSchema());
         $this->assertInstanceOf(ContainerInterface::class, $this->sampleService->getContainer());
     }
 }
