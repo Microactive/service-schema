@@ -11,20 +11,38 @@ class TaskEvent extends AbstractEvent
 
     public function __construct(string $name, string $id = null, array $payload = null)
     {
-        parent::__construct($name, $id, $payload);
+        $this->name = $name;
+        $this->id = $id;
+        $this->payload = $payload;
         $this->receivedAt = new \DateTime();
     }
 
     /**
-     * @return array
+     * @return false|string
      */
-    public function toArray()
+    public function jsonSerialize()
     {
-        return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "payload" => $this->payload,
-            "received" => $this->receivedAt->format('Y-m-d H:i:s')
-        ];
+        return json_encode(
+            [
+                "name" => $this->name,
+                "id" => $this->id,
+                "payload" => $this->payload,
+                "received_at" => $this->receivedAt->format('Y-m-d H:i:s')
+            ]
+        );
+    }
+
+    /**
+     * @param string $jsonString
+     * @return \Samples\TaskService\Events\TaskEvent
+     */
+    public function jsonUnserialize(string $jsonString)
+    {
+        $data = json_decode($jsonString, true);
+        $this->name = isset($data['name']) ? $data['name'] : null;
+        $this->id = isset($data['id']) ? $data['id'] : null;
+        $this->payload = isset($data['payload']) ? $data['payload'] : null;
+
+        return $this;
     }
 }

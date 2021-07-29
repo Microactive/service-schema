@@ -2,9 +2,9 @@
 
 namespace Micronative\ServiceSchema\Event;
 
-use Micronative\ServiceSchema\Json\JsonReader;
+use JsonSerializable;
 
-abstract class AbstractEvent
+abstract class AbstractEvent implements JsonSerializable
 {
     /** @var string */
     protected $name;
@@ -19,42 +19,45 @@ abstract class AbstractEvent
      * @var string relative path (from Processor::schemaDir) to json schema file
      * @@see \Micronative\ServiceSchema\Processor::schemaDir
      */
-    protected $jsonSchema;
+    protected $schema;
 
     /**
-     * AbstractEvent constructor.
-     * @param string $name
-     * @param string|null $id
-     * @param array|null $payload
-     * @param string|null $jsonSchema
-     */
-    public function __construct(string $name, string $id = null, array $payload = null, string $jsonSchema = null)
-    {
-        $this->name = $name;
-        $this->id = $id;
-        $this->payload = $payload;
-        $this->jsonSchema = $jsonSchema;
-    }
-
-    /**
-     * Get the json representing the event
-     * Override this function to return more properties if as necessary
-     * But name is required
+     * Get the json string representing the event
+     * name is required
      *
      * @return false|string
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-     public function toJson()
-     {
-         return JsonReader::encode(
-             [
-                 "name" => $this->name,
-                 "id" => $this->id,
-                 "payload" => $this->payload,
-             ]
-         );
-     }
+    abstract public function jsonSerialize();
+    /**
+     * {
+     *   return json_encode(
+     *     [
+     *       "name" => $this->name,
+     *       "id" => $this->id,
+     *       "payload" => $this->payload,
+     *     ]
+     *   );
+     * }
+     */
 
+    /**
+     * Set event properties from json string
+     * @param string $jsonString
+     * @return \Micronative\ServiceSchema\Event\AbstractEvent
+     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
+     */
+    abstract public function jsonUnserialize(string $jsonString);
+    /**
+     * {
+     *   $data = json_decode($jsonString, true);
+     *   $this->name = isset($data['name']) ? $data['name'] : null;
+     *   $this->id = isset($data['id']) ? $data['id'] : null;
+     *   $this->payload = isset($data['payload']) ? $data['payload'] : null;
+     *
+     *   return $this;
+     * }
+     */
 
     /**
      * @return string|null
@@ -94,7 +97,6 @@ abstract class AbstractEvent
         return $this;
     }
 
-
     /**
      * @return array|null
      */
@@ -117,18 +119,18 @@ abstract class AbstractEvent
     /**
      * @return string|null
      */
-    public function getJsonSchema(): ?string
+    public function getSchema(): ?string
     {
-        return $this->jsonSchema;
+        return $this->schema;
     }
 
     /**
-     * @param string|null $jsonSchema
+     * @param string|null $schema
      * @return \Micronative\ServiceSchema\Event\AbstractEvent
      */
-    public function setJsonSchema(?string $jsonSchema): AbstractEvent
+    public function setSchema(?string $schema): AbstractEvent
     {
-        $this->jsonSchema = $jsonSchema;
+        $this->schema = $schema;
 
         return $this;
     }

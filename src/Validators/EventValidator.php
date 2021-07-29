@@ -8,6 +8,8 @@ use Micronative\ServiceSchema\Event\AbstractEvent;
 use Micronative\ServiceSchema\Json\JsonReader;
 use Micronative\ServiceSchema\Validators\Exceptions\ValidatorException;
 
+use function Webmozart\Assert\Tests\StaticAnalysis\string;
+
 class EventValidator
 {
     /** @var \JsonSchema\Validator */
@@ -29,18 +31,18 @@ class EventValidator
 
     /**
      * @param \Micronative\ServiceSchema\Event\AbstractEvent $event
-     * @param bool $applyPayloadDefaultValues
+     * @param bool $applyDefaultValues
      * @return bool
      * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      * @throws \Micronative\ServiceSchema\Validators\Exceptions\ValidatorException
      */
-    public function validateEvent(AbstractEvent $event, bool $applyPayloadDefaultValues = false)
+    public function validateEvent(AbstractEvent $event, bool $applyDefaultValues = false)
     {
-        if (empty($jsonSchema = $event->getJsonSchema())) {
+        if (empty($jsonSchema = $event->getSchema())) {
             return true;
         }
 
-        if (empty($jsonObject = JsonReader::decode($event->toJson()))) {
+        if (empty($jsonObject = JsonReader::decode($event->jsonSerialize()))) {
             throw new ValidatorException(ValidatorException::INVALID_JSON);
         }
 
@@ -48,7 +50,7 @@ class EventValidator
             throw new ValidatorException(ValidatorException::INVALID_SCHEMA);
         }
 
-        $checkMode = $applyPayloadDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
+        $checkMode = $applyDefaultValues === true ? Constraint::CHECK_MODE_APPLY_DEFAULTS : null;
         $this->validator->validate($jsonObject, $schema, $checkMode);
 
         if (!$this->validator->isValid()) {
@@ -57,10 +59,8 @@ class EventValidator
             );
         }
 
-        if ($applyPayloadDefaultValues === true) {
-            if (isset($jsonObject->payload)) {
-                $event->setPayload($jsonObject->payload);
-            }
+        if ($applyDefaultValues === true) {
+            $event->jsonUnserialize(json_encode($jsonObject));
         }
 
         return true;

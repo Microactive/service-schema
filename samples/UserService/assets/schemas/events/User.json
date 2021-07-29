@@ -25,6 +25,10 @@
         "email"
       ],
       "additionalProperties": true
+    },
+    "published_by": {
+      "type": "string",
+      "default" : "UserService"
     }
   },
   "required": [

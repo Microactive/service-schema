@@ -6,22 +6,32 @@ use Micronative\ServiceSchema\Event\AbstractEvent;
 
 class SampleInvalidEvent extends AbstractEvent
 {
-    /**
-     * @return false|string
-     */
-    public function toJson()
+    public function __construct(string $name, string $id = null, array $payload = null)
     {
-        return 'invalid_json';
+        $this->name = $name;
+        $this->id = $id;
+        $this->payload = $payload;
     }
 
     /**
-     * @param array|null $data
-     * @return \Micronative\ServiceSchema\Event\AbstractEvent|void
+     * @return false|string
      */
-    public function setData(array $data = null)
+    public function jsonSerialize()
     {
-        $this->id = isset($data['id']) ? $data['id'] : null;
+        return 'invalid_json_string';
+    }
+
+    /**
+     * @param string $jsonString
+     * @return \Tests\Event\SampleInvalidEvent
+     */
+    public function jsonUnserialize(string $jsonString)
+    {
+        $data = json_decode($jsonString, true);
         $this->name = isset($data['name']) ? $data['name'] : null;
+        $this->id = isset($data['id']) ? $data['id'] : null;
         $this->payload = isset($data['payload']) ? $data['payload'] : null;
+
+        return $this;
     }
 }

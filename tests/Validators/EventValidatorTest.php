@@ -32,7 +32,7 @@ class EventValidatorTest extends TestCase
     public function testValidateWithInvalidJsonEvent()
     {
         $event = new SampleInvalidEvent('SomeName');
-        $event->setJsonSchema("/assets/schemas/events/User.json");
+        $event->setSchema("/assets/schemas/events/User.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessage(ValidatorException::INVALID_JSON);
         $this->validator->validateEvent($event);
@@ -44,7 +44,7 @@ class EventValidatorTest extends TestCase
     public function testValidateWithInvalidSchema()
     {
         $event = new SampleEvent("SomeName");
-        $event->setJsonSchema("/assets/schemas/events/InvalidSchema.json");
+        $event->setSchema("/assets/schemas/events/InvalidSchema.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessage(ValidatorException::INVALID_SCHEMA);
         $this->validator->validateEvent($event);
@@ -56,7 +56,7 @@ class EventValidatorTest extends TestCase
     public function testValidateFailed()
     {
         $event = new SampleEvent("SomeName");
-        $event->setJsonSchema("/assets/schemas/events/Task.json");
+        $event->setSchema("/assets/schemas/events/Task.json");
         $this->expectException(ValidatorException::class);
         $this->expectExceptionMessageMatches("%" . ValidatorException::INVALIDATED_EVENT . "%");
         $this->validator->validateEvent($event);
@@ -68,7 +68,7 @@ class EventValidatorTest extends TestCase
     public function testValidateWithNoneExistingSchema()
     {
         $event = new SampleEvent("SomeName");
-        $event->setJsonSchema("/assets/schemas/events/NoneExistingSchmea.json");
+        $event->setSchema("/assets/schemas/events/NoneExistingSchmea.json");
         $this->expectException(JsonException::class);
         $this->expectExceptionMessageMatches("%" . JsonException::INVALID_JSON_FILE . "%");
         $this->validator->validateEvent($event);
@@ -81,7 +81,7 @@ class EventValidatorTest extends TestCase
     {
         $event = new SampleEvent("SomeName");
         $event->setName('User.Created')->setPayload(["name" => "Ken"]);
-        $event->setJsonSchema("/assets/schemas/events/Task.json");
+        $event->setSchema("/assets/schemas/events/Task.json");
         $validated = $this->validator->validateEvent($event, true);
         $this->assertTrue($validated);
     }

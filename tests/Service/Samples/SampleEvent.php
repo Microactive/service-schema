@@ -3,22 +3,41 @@
 namespace Tests\Service\Samples;
 
 use Micronative\ServiceSchema\Event\AbstractEvent;
-use Micronative\ServiceSchema\Json\JsonReader;
 
 class SampleEvent extends AbstractEvent
 {
+    public function __construct(string $name, string $id = null, array $payload = null)
+    {
+        $this->name = $name;
+        $this->id = $id;
+        $this->payload = $payload;
+    }
+
     /**
      * @return false|string
-     * @throws \Micronative\ServiceSchema\Json\Exceptions\JsonException
      */
-    public function toJson()
+    public function jsonSerialize()
     {
-        return JsonReader::encode(
+        return json_encode(
             [
-                "id" => $this->id,
                 "name" => $this->name,
-                "payload" => $this->payload,
+                "id" => $this->id,
+                "payload" => $this->payload
             ]
         );
+    }
+
+    /**
+     * @param string $jsonString
+     * @return \Tests\Service\Samples\SampleEvent
+     */
+    public function jsonUnserialize(string $jsonString)
+    {
+        $jsonObject = json_decode($jsonString);
+        $this->name = $jsonObject->name;
+        $this->id = $jsonObject->id ?? null;
+        $this->payload = $jsonObject->payload ?? null;
+
+        return $this;
     }
 }
