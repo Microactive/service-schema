@@ -1,6 +1,6 @@
 <?php
 
-namespace Micronative\ServiceSchema\Event\Exception;
+namespace Micronative\ServiceSchema\Event\Exceptions;
 
 use Micronative\ServiceSchema\Exceptions\ServiceSchemaException;
 
