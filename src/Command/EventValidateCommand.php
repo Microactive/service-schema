@@ -13,9 +13,6 @@ class EventValidateCommand implements CommandInterface
     /** @var \Micronative\ServiceSchema\Event\AbstractEvent */
     private $event;
 
-    /** @var string */
-    private $jsonSchema;
-
     /** @var bool */
     private $applyDefaultValues;
 
