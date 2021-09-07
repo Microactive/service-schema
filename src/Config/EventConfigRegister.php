@@ -39,10 +39,10 @@ class EventConfigRegister
             $ext = pathinfo($file, PATHINFO_EXTENSION);
             switch ($ext) {
                 case 'json':
-                    $this->loadFromJson($file);
+                    $this->loadEventConfigFromJson($file);
                     break;
                 case 'yml':
-                    $this->loadFromYaml($file);
+                    $this->loadEventConfigFromYaml($file);
                     break;
                 default:
                     throw new ConfigException(ConfigException::UNSUPPORTED_FILE_FORMAT . $ext);
@@ -87,7 +87,7 @@ class EventConfigRegister
      * @param string|null $file
      * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
-    private function loadFromJson(string $file = null)
+    private function loadEventConfigFromJson(string $file = null)
     {
         $events = JsonReader::decode(JsonReader::read($file), true);
         $this->loadFromArray($events);
@@ -96,7 +96,7 @@ class EventConfigRegister
     /**
      * @param string|null $file
      */
-    private function loadFromYaml(string $file = null)
+    private function loadEventConfigFromYaml(string $file = null)
     {
         $events = Yaml::parseFile($file);
         $this->loadFromArray($events);

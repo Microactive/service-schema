@@ -41,10 +41,10 @@ class ServiceConfigRegister
             $ext = pathinfo($file, PATHINFO_EXTENSION);
             switch ($ext) {
                 case 'json':
-                    $this->loadFromJson($file);
+                    $this->loadServiceConfigFromJson($file);
                     break;
                 case 'yml':
-                    $this->loadFromYaml($file);
+                    $this->loadServiceConfigFromYaml($file);
                     break;
                 default:
                     throw new ConfigException(ConfigException::UNSUPPORTED_FILE_FORMAT . $ext);
@@ -91,7 +91,7 @@ class ServiceConfigRegister
      * @param string|null $file
      * @throws \Micronative\ServiceSchema\Exceptions\JsonException
      */
-    private function loadFromJson(string $file = null)
+    private function loadServiceConfigFromJson(string $file = null)
     {
         $services = JsonReader::decode(JsonReader::read($file), true);
         $this->loadFromArray($services);
@@ -100,7 +100,7 @@ class ServiceConfigRegister
     /**
      * @param string|null $file
      */
-    private function loadFromYaml(string $file = null)
+    private function loadServiceConfigFromYaml(string $file = null)
     {
         $services = Yaml::parseFile($file);
         $this->loadFromArray($services);
